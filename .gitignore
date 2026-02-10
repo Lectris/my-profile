@@ -12,4 +12,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 EOF
-docs\archive
+docs/archive/
+Thumbs.db
+.cursorignore
+scripts/
