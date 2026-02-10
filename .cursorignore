@@ -1,0 +1,8 @@
+node_modules/
+.git/
+.clasp.json
+*.pdf
+*.png
+*.jpg
+**/*.map
+scripts/

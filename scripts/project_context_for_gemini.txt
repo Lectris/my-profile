@@ -1,0 +1,868 @@
+# Project Directory Structure
+================================================================================
+- index.html
+
+
+
+# File Contents (Latest Version Only)
+================================================================================
+
+
+--------------------------------------------------------------------------------
+File Path: index.html
+--------------------------------------------------------------------------------
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R.S. | 実務型DX推進・知財管理スペシャリスト</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+
+    <!-- FontAwesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Config & Styles -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                base: "#0f172a", // Slate 900 (基本テキスト・背景)
+                primary: "#1e3a8a", // Blue 900 (メインカラー：信頼の濃紺)
+                secondary: "#334155", // Slate 700 (サブテキスト)
+                accent: "#b45309", // Amber 700 (アクセント：落ち着いたゴールド)
+                bg: "#f8fafc", // Slate 50 (背景色)
+                border: "#cbd5e1", // Slate 300 (境界線)
+              },
+            },
+            fontFamily: {
+              sans: ['"Noto Sans JP"', "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        background-color: #f8fafc;
+        color: #334155;
+        font-family: "Noto Sans JP", sans-serif;
+      }
+
+      /* Mandatory Chart Container Styling */
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px; /* Explicit max-width */
+        margin-left: auto;
+        margin-right: auto;
+        height: 350px; /* Base height */
+        max-height: 400px; /* Max height cap */
+      }
+
+      /* Specific height adjustments for mobile/desktop */
+      @media (max-width: 768px) {
+        .chart-container {
+          height: 300px;
+        }
+      }
+
+      /* Utility for cards */
+      .card {
+        background-color: white;
+        border-radius: 0.5rem; /* rounded-lg */
+        box-shadow:
+          0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06); /* 控えめなシャドウ */
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border-top: 4px solid #1e3a8a; /* 濃紺のボーダー */
+        border: 1px solid #e2e8f0;
+      }
+
+      /* Section Header Style */
+      .section-title {
+        position: relative;
+        padding-bottom: 0.5rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid #e2e8f0;
+      }
+      .section-title::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 60px;
+        height: 2px;
+        background-color: #1e3a8a;
+      }
+    </style>
+  </head>
+  <body class="antialiased">
+    <!-- Navigation / Header -->
+    <header
+      class="bg-white text-brand-base sticky top-0 z-50 shadow-md border-b border-brand-border"
+    >
+      <div
+        class="container mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div>
+          <h1 class="text-xl md:text-2xl font-bold tracking-wide">
+            R.S.
+            <span class="text-base font-normal text-gray-500 ml-2">R.S.</span>
+          </h1>
+          <p class="text-xs md:text-sm text-brand-primary font-medium">
+            DX推進・知財管理スペシャリスト
+          </p>
+        </div>
+        <nav class="hidden md:flex space-x-8 text-sm font-bold text-gray-600">
+          <a
+            href="#profile"
+            class="hover:text-brand-primary transition border-b-2 border-transparent hover:border-brand-primary pb-1"
+            >経歴概要</a
+          >
+          <a
+            href="#skills"
+            class="hover:text-brand-primary transition border-b-2 border-transparent hover:border-brand-primary pb-1"
+            >保有スキル</a
+          >
+          <a
+            href="#achievements"
+            class="hover:text-brand-primary transition border-b-2 border-transparent hover:border-brand-primary pb-1"
+            >業務実績</a
+          >
+          <a
+            href="#portfolio"
+            class="hover:text-brand-primary transition border-b-2 border-transparent hover:border-brand-primary pb-1"
+            >開発実績</a
+          >
+        </nav>
+        <a
+          href="https://github.com/Lectris"
+          target="_blank"
+          class="bg-gray-800 text-white px-5 py-2 rounded font-medium text-sm hover:bg-gray-700 transition flex items-center"
+        >
+          <i class="fab fa-github mr-2"></i>GitHub
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section
+      id="profile"
+      class="bg-brand-primary text-white py-16 relative overflow-hidden"
+    >
+      <!-- Subtle Pattern -->
+      <div
+        class="absolute inset-0 opacity-10"
+        style="
+          background-image: radial-gradient(#ffffff 1px, transparent 1px);
+          background-size: 20px 20px;
+        "
+      ></div>
+
+      <div class="container mx-auto px-4 text-center relative z-10">
+        <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
+          現場の実務とIT技術を統合し、<br />組織の課題を解決する実務家。
+        </h2>
+        <p
+          class="text-base md:text-lg max-w-3xl mx-auto opacity-90 mb-10 leading-relaxed font-light"
+        >
+          契約・法務の実務能力、拠点立ち上げの遂行力、そしてモダンなIT技術。<br />
+          これらを兼ね備え、コストをかけずに業務プロセスを変革（DX）します。
+        </p>
+
+        <div
+          class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto mt-12 text-brand-base"
+        >
+          <!-- Stat 1 -->
+          <div
+            class="bg-white p-6 rounded shadow-lg border-l-4 border-brand-accent text-left"
+          >
+            <div class="text-brand-primary text-3xl mb-3">
+              <i class="fas fa-building"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2 text-gray-800">
+              拠点立ち上げ・新規開拓
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              東北支社の設立責任者として着任。単身で事務所選定から行政届出を完遂し、顧客ゼロから1年半で50社の新規取引を開拓。
+            </p>
+          </div>
+          <!-- Stat 2 -->
+          <div
+            class="bg-white p-6 rounded shadow-lg border-l-4 border-brand-accent text-left"
+          >
+            <div class="text-brand-primary text-3xl mb-3">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2 text-gray-800">
+              予算ゼロからの業務自動化
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              IT予算のない環境下でPython/GASを活用したスクリプトを自作。入札情報収集などのルーチンワークを完全自動化し、工数を削減。
+            </p>
+          </div>
+          <!-- Stat 3 -->
+          <div
+            class="bg-white p-6 rounded shadow-lg border-l-4 border-brand-accent text-left"
+          >
+            <div class="text-brand-primary text-3xl mb-3">
+              <i class="fas fa-briefcase"></i>
+            </div>
+            <h3 class="font-bold text-lg mb-2 text-gray-800">
+              バックオフィス業務の完遂
+            </h3>
+            <p class="text-sm text-gray-600 leading-relaxed">
+              総務・経理・法務（契約/申請）・営業・制作。組織運営に必要な全機能を一人で担当し、黒字化の基盤を構築。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="container mx-auto px-4 py-12">
+      <!-- Section: Core Competency -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mb-16">
+        <!-- Text Content -->
+        <div class="flex flex-col justify-center">
+          <div class="section-title">
+            <h3 class="text-2xl font-bold text-brand-base">
+              領域を横断する「多能工」としての強み
+            </h3>
+          </div>
+          <p class="text-gray-700 mb-6 leading-relaxed text-justify">
+            一般的な「事務職」や「エンジニア」の枠に留まりません。日本年金機構での厳格な事務処理能力、広告代理業での泥臭い折衝経験、そして独学で習得し実務適用した開発スキル。これらを掛け合わせることで、<strong>「現場の痛みがわかるDX推進者」</strong>として組織に貢献します。
+          </p>
+          <ul class="space-y-4">
+            <li class="flex items-start">
+              <i class="fas fa-check-square text-brand-primary mt-1 mr-3"></i>
+              <div>
+                <span class="font-bold text-gray-800 block"
+                  >法務・管理実務 (Legal & Admin)</span
+                >
+                <span class="text-sm text-gray-600"
+                  >契約交渉、行政への許認可申請、入札仕様書の読解と履行管理。</span
+                >
+              </div>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-square text-brand-primary mt-1 mr-3"></i>
+              <div>
+                <span class="font-bold text-gray-800 block"
+                  >IT技術・開発 (Engineering)</span
+                >
+                <span class="text-sm text-gray-600"
+                  >Pythonによる自動化、GASでのツール開発、Linuxサーバー運用。</span
+                >
+              </div>
+            </li>
+            <li class="flex items-start">
+              <i class="fas fa-check-square text-brand-primary mt-1 mr-3"></i>
+              <div>
+                <span class="font-bold text-gray-800 block"
+                  >クリエイティブ (Creative)</span
+                >
+                <span class="text-sm text-gray-600"
+                  >Adobe (Ps/Ai) を用いた資料・広告制作、DTP実務。</span
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Visualization: Radar Chart -->
+        <div
+          class="card flex flex-col items-center justify-center bg-gray-50 border-none"
+        >
+          <h4 class="text-base font-bold text-center mb-4 text-gray-700">
+            コア・コンピテンシー評価
+          </h4>
+          <div class="chart-container">
+            <canvas id="competencyRadar"></canvas>
+          </div>
+          <p class="text-xs text-center text-gray-500 mt-3">
+            ※実務経験と成果に基づく自己評価 (10段階)
+          </p>
+        </div>
+      </div>
+
+      <!-- Section: Technical Stack -->
+      <section id="skills" class="mb-20">
+        <div class="section-title text-center border-none">
+          <h3
+            class="text-2xl font-bold text-brand-base inline-block border-b-2 border-brand-primary pb-2"
+          >
+            保有技術・スキルセット
+          </h3>
+        </div>
+        <p class="text-center text-gray-600 max-w-3xl mx-auto mb-10">
+          単なる知識学習に留まらず、実務上の課題解決や個人開発において「成果物」を生み出してきた技術スタックです。
+        </p>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Tech Skills Bar Chart -->
+          <div class="card">
+            <h4
+              class="text-lg font-bold mb-6 flex items-center text-gray-800 border-b pb-2"
+            >
+              <i class="fas fa-code text-brand-primary mr-2"></i>
+              エンジニアリングスキル
+            </h4>
+            <div class="chart-container">
+              <canvas id="techSkillsChart"></canvas>
+            </div>
+            <div
+              class="mt-4 text-sm text-gray-700 bg-blue-50 p-4 rounded border border-blue-100"
+            >
+              <strong>特記事項:</strong>
+              業務効率化ツール（Python/GAS）からWebアプリ（SPA）まで、目的に応じて最適な技術を選定・実装可能です。
+            </div>
+          </div>
+
+          <!-- Plotly Bubble Chart: Skill vs Interest -->
+          <div class="card">
+            <h4
+              class="text-lg font-bold mb-6 flex items-center text-gray-800 border-b pb-2"
+            >
+              <i class="fas fa-chart-line text-brand-primary mr-2"></i>
+              スキル習熟度とキャリア志向
+            </h4>
+            <div id="plotlySkillMap" class="w-full h-[350px]"></div>
+            <div
+              class="mt-4 text-sm text-gray-700 bg-blue-50 p-4 rounded border border-blue-100"
+            >
+              <strong>キャリアの方向性:</strong>
+              「知財・法務・管理部門」の実務に対し、「IT・自動化技術」を適用する領域に最も強い意欲と適性を持っています。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Impact Case Study -->
+      <section id="achievements" class="mb-20">
+        <div
+          class="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
+        >
+          <div class="bg-brand-primary text-white p-6 md:p-8">
+            <span
+              class="inline-block bg-brand-accent text-white text-xs font-bold px-2 py-1 rounded mb-3"
+              >CASE STUDY</span
+            >
+            <h3 class="text-2xl md:text-3xl font-bold">
+              入札業務プロセスの完全自動化
+            </h3>
+            <p class="opacity-90 mt-2">IT投資ゼロで実現した業務改革の実例</p>
+          </div>
+
+          <div
+            class="p-8 md:p-12 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+          >
+            <div>
+              <h4
+                class="text-lg font-bold text-gray-800 mb-4 border-l-4 border-brand-accent pl-3"
+              >
+                課題と解決策
+              </h4>
+              <p class="text-gray-700 mb-6 leading-relaxed">
+                東北支社において、官公庁入札案件の獲得を目指しましたが、有料の入札情報サービス（月額数万円〜）の予算承認が下りないという課題に直面しました。
+                人力での各自治体HP巡回は非効率であり、見落としリスクも高いため、独自の解決策を講じました。
+              </p>
+
+              <div class="space-y-6">
+                <div
+                  class="flex items-start p-4 bg-red-50 rounded border border-red-100"
+                >
+                  <div class="text-red-500 mr-4 text-xl">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-red-800 mb-1">導入前 (Before)</h5>
+                    <p class="text-sm text-gray-700">
+                      各自治体HPを目視で巡回・確認。<br />所要時間：<strong>1日あたり約1.5〜2時間</strong>。<br />精神的負荷が高く、本来の企画業務を圧迫。
+                    </p>
+                  </div>
+                </div>
+                <div
+                  class="flex items-start p-4 bg-blue-50 rounded border border-blue-100"
+                >
+                  <div class="text-brand-primary mr-4 text-xl">
+                    <i class="fas fa-check-circle"></i>
+                  </div>
+                  <div>
+                    <h5 class="font-bold text-brand-primary mb-1">
+                      導入後 (After)
+                    </h5>
+                    <p class="text-sm text-gray-700">
+                      Pythonによるスクレイピングツールを自作。<br />所要時間：<strong>ほぼゼロ（自動通知を確認するのみ）</strong>。<br />浮いた工数を生成AI活用による企画書作成に充て、受注に貢献。
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Visualization: Impact Chart -->
+            <div class="bg-gray-50 rounded-lg p-6 border border-gray-200">
+              <h4 class="text-center font-bold mb-6 text-gray-700">
+                入札情報検索にかかる週間工数の比較
+              </h4>
+              <div class="chart-container" style="height: 300px">
+                <canvas id="automationImpactChart"></canvas>
+              </div>
+              <div
+                class="text-center mt-6 p-4 bg-white rounded border border-gray-200 shadow-sm"
+              >
+                <p class="text-sm text-gray-500 mb-1">工数削減率</p>
+                <p class="text-4xl font-bold text-brand-primary">
+                  95<span class="text-2xl">%</span>
+                  <span class="text-base text-gray-600 font-normal">削減</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Portfolio / GitHub Projects -->
+      <section id="portfolio" class="mb-16">
+        <div class="section-title text-center border-none">
+          <h3
+            class="text-2xl font-bold text-brand-base inline-block border-b-2 border-brand-primary pb-2"
+          >
+            個人開発・運用実績
+          </h3>
+        </div>
+        <p class="text-center text-gray-600 mb-10">
+          GitHubにてソースコードを公開しております。
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Project 1 -->
+          <div
+            class="card hover:shadow-lg transition duration-300 border-t-4 border-blue-600 p-6"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <i class="fas fa-balance-scale text-3xl text-gray-700"></i>
+              <span
+                class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold"
+                >学習支援システム</span
+              >
+            </div>
+            <h4 class="font-bold text-base mb-2 text-gray-800">
+              BizLaw Integrated
+            </h4>
+            <p
+              class="text-sm text-gray-600 mb-4 h-20 overflow-hidden leading-snug"
+            >
+              企業法務・知財学習のためのWebアプリケーション。GASをバックエンドAPIとして利用し、SPA（シングルページアプリケーション）として構築。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >GAS</span
+              >
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >JavaScript</span
+              >
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div
+            class="card hover:shadow-lg transition duration-300 border-t-4 border-green-600 p-6"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <i class="fas fa-database text-3xl text-gray-700"></i>
+              <span
+                class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold"
+                >データ収集・分析</span
+              >
+            </div>
+            <h4 class="font-bold text-base mb-2 text-gray-800">
+              Horse Racing DB
+            </h4>
+            <p
+              class="text-sm text-gray-600 mb-4 h-20 overflow-hidden leading-snug"
+            >
+              Webスクレイピングによるデータ収集から、データベース(SQLite)への格納、異常検知分析までをPowerShellで統合管理するシステム。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >Python</span
+              >
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >PowerShell</span
+              >
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div
+            class="card hover:shadow-lg transition duration-300 border-t-4 border-yellow-600 p-6"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <i class="fas fa-desktop text-3xl text-gray-700"></i>
+              <span
+                class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold"
+                >業務効率化ツール</span
+              >
+            </div>
+            <h4 class="font-bold text-base mb-2 text-gray-800">
+              Picture to PDF
+            </h4>
+            <p
+              class="text-sm text-gray-600 mb-4 h-20 overflow-hidden leading-snug"
+            >
+              事務作業効率化のためのデスクトップアプリ。複数の画像ファイルをドラッグ＆ドロップでPDFへ一括変換・結合。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >Python (Tkinter)</span
+              >
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >GUI</span
+              >
+            </div>
+          </div>
+
+          <!-- Project 4 -->
+          <div
+            class="card hover:shadow-lg transition duration-300 border-t-4 border-purple-600 p-6"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <i class="fas fa-calculator text-3xl text-gray-700"></i>
+              <span
+                class="bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded font-bold"
+                >自動記帳システム</span
+              >
+            </div>
+            <h4 class="font-bold text-base mb-2 text-gray-800">GAS Kakeibo</h4>
+            <p
+              class="text-sm text-gray-600 mb-4 h-20 overflow-hidden leading-snug"
+            >
+              Gmailに届く決済通知メールを解析し、スプレッドシートへ自動記帳する家計簿システム。正規表現を用いて高精度に抽出。
+            </p>
+            <div class="flex flex-wrap gap-2">
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >Gmail API</span
+              >
+              <span class="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded"
+                >Regex</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10 mt-12">
+      <div class="container mx-auto px-4 text-center">
+        <h2 class="text-xl font-bold mb-4">お問い合わせ</h2>
+        <p class="mb-8 opacity-80 text-sm leading-relaxed">
+          知財・管理部門の業務プロセス変革、およびDX推進に関するご相談をお待ちしております。<br />
+          詳細な職務経歴書は別途ご用意しております。
+        </p>
+        <div class="flex justify-center space-x-6">
+          <a
+            href="https://github.com/Lectris"
+            class="text-gray-300 hover:text-white text-3xl transition"
+            title="GitHub Profile"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+        <p class="mt-8 text-xs text-gray-500">
+          © 2026 R.S. All Rights Reserved.
+        </p>
+      </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+      // --- 1. Helper Function: Label Wrapping ---
+      function wrapLabel(str, maxChars) {
+        if (str.length <= maxChars) return str;
+        const words = str.split(" ");
+        const lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+          if (currentLine.length + 1 + words[i].length <= maxChars) {
+            currentLine += " " + words[i];
+          } else {
+            lines.push(currentLine);
+            currentLine = words[i];
+          }
+        }
+        lines.push(currentLine);
+        if (lines.length === 1 && str.length > maxChars) {
+          return str.match(new RegExp(".{1," + maxChars + "}", "g"));
+        }
+        return lines;
+      }
+
+      // --- 2. Chart Global Config (Tooltip Requirement) ---
+      Chart.defaults.font.family = '"Noto Sans JP", sans-serif';
+      Chart.defaults.color = "#334155";
+
+      const commonTooltipPlugin = {
+        tooltip: {
+          callbacks: {
+            title: function (tooltipItems) {
+              const item = tooltipItems[0];
+              let label = item.chart.data.labels[item.dataIndex];
+              if (Array.isArray(label)) {
+                return label.join(" ");
+              } else {
+                return label;
+              }
+            },
+          },
+          backgroundColor: "rgba(15, 23, 42, 0.95)", // Slate 900
+          titleFont: { size: 14, family: '"Noto Sans JP", sans-serif' },
+          bodyFont: { size: 13, family: '"Noto Sans JP", sans-serif' },
+          padding: 12,
+          cornerRadius: 4,
+          displayColors: true,
+        },
+      };
+
+      // --- 3. Chart Implementations ---
+
+      // A. Competency Radar Chart
+      const ctxRadar = document
+        .getElementById("competencyRadar")
+        .getContext("2d");
+      new Chart(ctxRadar, {
+        type: "radar",
+        data: {
+          labels: [
+            ["契約・法務実務", "(Legal & Admin)"],
+            ["IT技術・開発", "(Python/GAS)"],
+            ["クリエイティブ", "(Adobe DTP)"],
+            ["折衝・新規開拓", "(Sales/Negotiation)"],
+            ["バックオフィス運営", "(Back Office Ops)"],
+          ],
+          datasets: [
+            {
+              label: "スキルレベル (1-10)",
+              data: [8, 8, 7, 9, 10],
+              backgroundColor: "rgba(30, 58, 138, 0.2)", // Blue 900 low opacity
+              borderColor: "#1e3a8a", // Blue 900
+              borderWidth: 2,
+              pointBackgroundColor: "#1e3a8a",
+              pointBorderColor: "#fff",
+              pointHoverBackgroundColor: "#fff",
+              pointHoverBorderColor: "#1e3a8a",
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          scales: {
+            r: {
+              angleLines: { color: "#cbd5e1" },
+              grid: { color: "#e2e8f0" },
+              pointLabels: {
+                font: {
+                  size: 12,
+                  weight: "bold",
+                  family: '"Noto Sans JP", sans-serif',
+                },
+                color: "#1e3a8a",
+              },
+              suggestedMin: 0,
+              suggestedMax: 10,
+              ticks: {
+                stepSize: 2,
+                backdropColor: "transparent",
+              },
+            },
+          },
+          plugins: {
+            ...commonTooltipPlugin,
+            legend: { display: false },
+          },
+        },
+      });
+
+      // B. Tech Skills Horizontal Bar
+      const ctxTech = document
+        .getElementById("techSkillsChart")
+        .getContext("2d");
+      new Chart(ctxTech, {
+        type: "bar",
+        data: {
+          labels: [
+            "Python (自動化/分析)",
+            "GAS / JavaScript",
+            "Linux / Docker",
+            "Adobe Illustrator/Ps",
+            "Excel VBA",
+          ],
+          datasets: [
+            {
+              label: "実務習熟度",
+              data: [85, 90, 70, 80, 95],
+              backgroundColor: [
+                "#1e3a8a", // Navy
+                "#2563eb", // Blue
+                "#475569", // Slate
+                "#b45309", // Amber (Accent)
+                "#64748b", // Gray
+              ],
+              borderRadius: 4,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y", // Horizontal
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              beginAtZero: true,
+              max: 100,
+              grid: { display: true, color: "#f1f5f9" },
+              ticks: { font: { size: 10 } },
+            },
+            y: {
+              grid: { display: false },
+              ticks: { font: { size: 11, weight: "500" }, color: "#334155" },
+            },
+          },
+          plugins: {
+            ...commonTooltipPlugin,
+            legend: { display: false },
+          },
+        },
+      });
+
+      // C. Automation Impact Chart
+      const ctxImpact = document
+        .getElementById("automationImpactChart")
+        .getContext("2d");
+      new Chart(ctxImpact, {
+        type: "bar",
+        data: {
+          labels: ["手動検索 (導入前)", "自動化 (導入後)"],
+          datasets: [
+            {
+              label: "週間作業時間 (時間)",
+              data: [10, 0.5],
+              backgroundColor: ["#9ca3af", "#1e3a8a"], // Gray vs Navy
+              borderRadius: 4,
+              barPercentage: 0.6,
+            },
+          ],
+        },
+        options: {
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "週間作業時間 (h)" },
+              grid: { borderDash: [2, 2] },
+            },
+            x: {
+              grid: { display: false },
+            },
+          },
+          plugins: {
+            ...commonTooltipPlugin,
+            legend: { display: false },
+          },
+        },
+      });
+
+      // D. Plotly Bubble Chart (Skill Landscape)
+      // 日本語化と色味の調整
+      const trace1 = {
+        x: [9, 8, 5, 8, 4], // 実務経験 (X軸)
+        y: [6, 9, 8, 7, 3], // 将来の関心度 (Y軸)
+        mode: "markers+text",
+        text: [
+          "営業・折衝",
+          "IT・DX推進",
+          "知財・法務",
+          "バックオフィス",
+          "デザイン実務",
+        ],
+        textposition: "top center",
+        textfont: {
+          family: '"Noto Sans JP", sans-serif',
+          size: 11,
+          color: "#334155",
+        },
+        marker: {
+          size: [30, 45, 50, 35, 25], // スキルレベル (サイズ)
+          color: ["#94a3b8", "#2563eb", "#1e3a8a", "#475569", "#b45309"],
+          opacity: 0.8,
+          line: {
+            color: "white",
+            width: 1,
+          },
+        },
+      };
+
+      const dataPlotly = [trace1];
+      const layoutPlotly = {
+        margin: { t: 30, r: 30, b: 50, l: 50 },
+        xaxis: {
+          title: {
+            text: "これまでの実務経験量",
+            font: { size: 12, family: '"Noto Sans JP", sans-serif' },
+          },
+          range: [0, 11],
+          showgrid: true,
+          gridcolor: "#f1f5f9",
+          zerolinecolor: "#e2e8f0",
+        },
+        yaxis: {
+          title: {
+            text: "今後のキャリア関心度",
+            font: { size: 12, family: '"Noto Sans JP", sans-serif' },
+          },
+          range: [0, 11],
+          showgrid: true,
+          gridcolor: "#f1f5f9",
+          zerolinecolor: "#e2e8f0",
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        font: { family: '"Noto Sans JP", sans-serif', color: "#334155" },
+        hovermode: "closest",
+      };
+
+      Plotly.newPlot("plotlySkillMap", dataPlotly, layoutPlotly, {
+        responsive: true,
+        displayModeBar: false,
+        renderer: "canvas",
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
