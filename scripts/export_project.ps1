@@ -10,12 +10,12 @@
 # --- 設定項目 ---
 
 # 対象のプロジェクトルートディレクトリ
-$TargetProjectDir = "C:\projects\my-profile\src"
+$TargetProjectDir = "C:\projects\my-portfolio\src"
 # ※docsも含めるために親ディレクトリを指定する場合は適宜変更してください
 # 例: $TargetProjectDir = "Y:\projects\bizlaw-integrated"
 
 # 出力先ディレクトリ
-$OutputSaveDir = "C:\projects\my-profile\scripts"
+$OutputSaveDir = "C:\projects\my-portfolio\scripts"
 
 # 出力ファイル名
 $OutputFileName = "project_context_for_gemini.txt"

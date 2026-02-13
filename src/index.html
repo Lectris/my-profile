@@ -1,19 +1,21 @@
 <!DOCTYPE html>
-<html lang="ja" class="scroll-smooth dark">
+<html lang="ja" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
     <!-- Security: Prevent Indexing -->
     <meta name="robots" content="noindex, nofollow" />
     
     <meta name="description" content="Ryo.S | 実務型DX推進・知財管理 ポートフォリオ">
-    <title>Ryo.S | 実務型DX推進・知財管理</title>
+    <title>Portfolio</title>
+
+    <!-- Favicon (Emoji SVG) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💼</text></svg>">
 
     <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -26,31 +28,22 @@
     <!-- Tailwind Config -->
     <script>
       tailwind.config = {
-        darkMode: 'class', // Enable class-based dark mode
+        darkMode: 'class',
         theme: {
           extend: {
             colors: {
               brand: {
-                dark: "#0f172a", // Slate 900 (Dark BG)
-                navy: "#1e3a8a", // Blue 900 (Primary)
-                slate: "#334155", // Slate 700 (Secondary)
-                gold: "#b45309", // Amber 700 (Accent)
-                light: "#f8fafc", // Slate 50 (Light BG)
+                dark: "#0f172a", // Slate 900
+                navy: "#1e3a8a", // Blue 900
+                slate: "#334155", // Slate 700
+                gold: "#b45309", // Amber 700
+                light: "#f8fafc", // Slate 50
                 muted: "#94a3b8", // Slate 400
               },
             },
             fontFamily: {
               sans: ['"Noto Sans JP"', "sans-serif"],
             },
-            animation: {
-              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
-            },
-            keyframes: {
-              fadeInUp: {
-                '0%': { opacity: '0', transform: 'translateY(20px)' },
-                '100%': { opacity: '1', transform: 'translateY(0)' },
-              }
-            }
           },
         },
       };
@@ -58,31 +51,95 @@
 
     <style>
       /* --- Base Styles --- */
-      body {
+      html, body {
+        height: 100%;
+        width: 100%;
         font-family: "Noto Sans JP", sans-serif;
-        overflow-x: hidden;
-        
-        /* Security: Disable Text Selection */
         -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
       }
 
+      /* Mobile: Normal Scroll */
+      html, body {
+        overflow-y: auto; 
+        overflow-x: hidden;
+      }
+      
+      /* PC: Hidden Body Scroll (Container handles it) */
+      @media (min-width: 1024px) {
+        html, body {
+            overflow: hidden;
+        }
+      }
+
+      /* Scroll Snap Container */
+      #main-scroll-container {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto; /* Default for mobile */
+      }
+
+      /* Sections */
+      .snap-section {
+        width: 100%;
+        position: relative;
+        min-height: 100vh; 
+        height: auto;
+        padding-bottom: 80px; /* Space for bottom nav on mobile */
+      }
+
+      /* PC Layout: Snap & Slide */
+      @media (min-width: 1024px) {
+        #main-scroll-container {
+          scroll-snap-type: y mandatory;
+          scroll-behavior: smooth;
+        }
+        .snap-section {
+          scroll-snap-align: start;
+          scroll-snap-stop: always;
+          height: 100dvh;
+          overflow-y: auto;
+          padding-bottom: 0;
+        }
+      }
+
+      /* Mobile Sticky Header (Optimized for Stacking) */
+      .sticky-header-mobile {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 50px; 
+        z-index: 40; 
+        margin-left: -1.5rem;
+        margin-right: -1.5rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+        background-color: #ffffff; 
+        border-bottom: 1px solid #e2e8f0;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      .dark .sticky-header-mobile {
+        background-color: #0f172a; 
+        border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      }
+      
+      @media (min-width: 1024px) {
+        .sticky-header-mobile {
+            position: static;
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            margin: 0;
+        }
+      }
+
       /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #94a3b8;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #b45309;
-      }
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #b45309; }
 
       /* Animation Classes */
       .reveal-on-scroll {
@@ -95,127 +152,109 @@
         transform: translateY(0);
       }
 
-      /* Card Hover Effects */
-      .hover-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      /* Card Style Refinement (Shadow & Contrast) */
+      .card-item {
+          background-color: white;
+          border: 1px solid #e2e8f0; /* border-gray-200 */
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); /* shadow-sm */
+          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
       }
-      .hover-card:hover {
+      .dark .card-item {
+          background-color: rgba(51, 65, 85, 0.2); /* brand-slate/20 */
+          border-color: rgba(255, 255, 255, 0.05);
+          box-shadow: none;
+      }
+      .card-item:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         border-color: #b45309;
       }
-      .dark .hover-card:hover {
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
+
+      .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+      /* Nav Active States */
+      .mobile-nav-item.active { color: #b45309; }
+      .mobile-nav-item.active i { transform: translateY(-2px); }
+      .pc-nav-item.active {
+        background-color: rgba(180, 83, 9, 0.1);
+        color: #b45309;
+        font-weight: 700;
+        border-right: 3px solid #b45309;
+      }
+      .dark .pc-nav-item.active {
+        background-color: rgba(180, 83, 9, 0.2);
+        color: #fbbf24;
       }
 
-      /* Sidebar Accordion */
-      .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .accordion-content.open {
-        max-height: 500px;
-      }
-
-      .pb-safe {
-        padding-bottom: env(safe-area-inset-bottom);
-      }
-      
-      /* Sticky Section Headers for Mobile */
-      .sticky-header-mobile {
-        position: -webkit-sticky;
-        position: sticky;
-        top: 52px;
-        z-index: 30;
-        backdrop-filter: blur(8px);
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        margin-left: -1.5rem;
-        margin-right: -1.5rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        padding-top: 0.75rem;
-        padding-bottom: 0.75rem;
-      }
-
-      /* --- PRINT STYLES (Optimized for cleanliness only) --- */
+      /* --- PRINT STYLES --- */
       @media print {
-        @page {
-          margin: 1cm;
-          size: auto;
-        }
+          @page {
+              size: landscape;
+              margin: 10mm;
+          }
 
-        body {
-          /* Allow text selection for printing if needed */
-          -webkit-user-select: text;
-          -moz-user-select: text;
-          -ms-user-select: text;
-          user-select: text;
-          color: #000 !important;
-          background: #fff !important;
-        }
+          html, body {
+              height: auto !important;
+              overflow: visible !important;
+              background: white !important;
+              color: #0f172a !important; 
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+          }
 
-        /* Hide Navigation & Interactive Elements */
-        #sidebar-pc, 
-        #header-mobile, 
-        #bottom-nav-mobile, 
-        .no-print, 
-        .sticky-header-mobile, 
-        button {
-          display: none !important;
-        }
+          aside, header, nav, button, .absolute, .animate-bounce, ::-webkit-scrollbar {
+              display: none !important;
+          }
 
-        /* Reset Main Content Layout */
-        #main-content {
-          margin-left: 0 !important;
-          padding: 0 !important;
-          width: 100% !important;
-          height: auto !important;
-          overflow: visible !important;
-        }
+          .flex { display: block !important; }
+          #main-scroll-container {
+              height: auto !important;
+              overflow: visible !important;
+              display: block !important;
+          }
 
-        /* Ensure content is visible */
-        .reveal-on-scroll {
-          opacity: 1 !important;
-          transform: none !important;
-        }
+          .snap-section {
+              height: 100vh !important;
+              min-height: 100vh !important;
+              page-break-after: always !important;
+              break-after: always !important;
+              overflow: visible !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: center !important;
+              padding: 0 !important;
+              margin: 0 !important;
+          }
+          
+          .sticky-header-mobile {
+              position: static !important;
+              background: none !important;
+              border: none !important;
+              box-shadow: none !important;
+          }
 
-        /* Adjust colors for print legibility */
-        p, h1, h2, h3, h4, h5, h6, li, span, strong {
-            color: #000 !important;
-        }
-        
-        .bg-white, .dark\:bg-brand-dark, .dark\:bg-brand-slate\/20, .bg-brand-light {
-            background-color: transparent !important;
-        }
+          .reveal-on-scroll {
+              opacity: 1 !important;
+              transform: none !important;
+              display: block !important;
+          }
 
-        /* Borders for definition */
-        .card, .hover-card {
-            border: 1px solid #ddd !important;
-            box-shadow: none !important;
-            break-inside: avoid;
-        }
+          .text-brand-navy { color: #1e3a8a !important; }
+          .text-brand-gold { color: #b45309 !important; }
+          .bg-blue-50, .bg-blue-100 { background-color: #dbeafe !important; }
+          .text-blue-600 { color: #2563eb !important; }
+          
+          .border, .border-t-4 { border-color: #ccc !important; }
+          .shadow-sm, .shadow-md, .shadow-lg { box-shadow: none !important; border: 1px solid #eee !important; }
 
-        /* Charts */
-        canvas {
-            max-width: 100% !important;
-            break-inside: avoid;
-        }
-        
-        /* Links */
-        a[href^="http"]:not(.no-print-url)::after {
-          content: " (" attr(href) ")";
-          font-size: 0.8em;
-          color: #444;
-        }
+          a { text-decoration: none !important; color: inherit !important; }
       }
     </style>
   </head>
-  <body class="antialiased selection:bg-brand-gold selection:text-white bg-brand-light dark:bg-brand-dark text-brand-navy dark:text-brand-light transition-colors duration-300">
+  <body class="bg-brand-light dark:bg-brand-dark text-brand-navy dark:text-brand-light transition-colors duration-300">
 
-    <!-- THEME TOGGLE SCRIPT -->
+    <!-- THEME TOGGLE LOGIC -->
     <script>
-      // Initialize Theme
       if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
         document.documentElement.classList.add('dark');
       } else {
@@ -230,519 +269,514 @@
           document.documentElement.classList.add('dark');
           localStorage.theme = 'dark';
         }
+        window.dispatchEvent(new Event('themeChanged'));
       }
     </script>
 
-    <!-- PRINT HEADER -->
-    <div id="print-header">
-        <div class="flex justify-between items-end">
-            <div>
-                <h1 class="text-3xl font-bold mb-2">職務経歴書</h1>
-                <p class="text-sm font-bold text-lg">氏名: Ryo.S / 1993年生</p>
-            </div>
-            <div class="text-right text-sm">
-                <p>作成日: <span id="print-date"></span></p>
-                <p>居住地: 愛知県名古屋市</p>
-            </div>
-        </div>
-        <div class="mt-4 text-sm border-t border-b border-gray-300 py-2 mb-4">
-            <strong>【略歴要約】</strong><br>
-            「泥臭い現場実務」と「最先端エンジニアリング」を融合させる実務型DX人材。日本年金機構での厳格な事務処理、株式会社キッズプロモーションでの「一人支社」運営を経て、現在はPython/AIを活用した業務変革を推進。IT予算ゼロの環境下で自らシステムを設計・実装し、組織の生産性を向上させることを得意とします。<br>
-        </div>
-    </div>
+    <!-- LAYOUT WRAPPER -->
+    <div class="flex h-full w-full overflow-hidden">
 
-    <!-- PRINT QR CODE -->
-    <div id="print-qr-section">
-        <div class="flex items-center gap-4">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://github.com/Lectris" alt="GitHub QR Code" width="80" height="80">
-            <div>
-                <p class="font-bold text-sm">Webポートフォリオ</p>
-                <p class="text-xs mt-1">詳細なソースコードや制作物は下記URLにて公開しています。</p>
-                <p class="text-xs underline mt-1">https://portfolio.nierina.com</p>
-            </div>
-        </div>
-        <div class="text-right text-xs text-gray-500">
-            <p>※本ドキュメントはWebポートフォリオの印刷出力版です。</p>
-        </div>
-    </div>
-
-    <!-- PC SIDEBAR NAVIGATION (lg:block) -->
-    <aside id="sidebar-pc" class="hidden lg:flex flex-col w-72 h-screen fixed top-0 left-0 bg-white dark:bg-brand-dark border-r border-gray-200 dark:border-brand-slate/30 z-50 transition-colors duration-300">
-      <div class="p-6 border-b border-gray-200 dark:border-brand-slate/30 flex justify-between items-start">
-        <div>
-            <h1 class="text-2xl font-bold tracking-wider text-brand-navy dark:text-white">Ryo.S</h1>
+      <!-- PC SIDEBAR -->
+      <aside class="hidden lg:flex flex-col w-64 h-full bg-white dark:bg-brand-dark border-r border-gray-200 dark:border-brand-slate/30 z-20 flex-shrink-0 shadow-lg">
+        <div class="p-6 border-b border-gray-200 dark:border-brand-slate/30 flex justify-between items-center">
+          <div>
+            <h1 class="text-2xl font-bold tracking-wider text-brand-navy dark:text-white">ポートフォリオ</h1>
             <p class="text-xs text-brand-gold mt-1 font-medium">DX & IP Management</p>
-        </div>
-        <!-- Theme Toggle PC -->
-        <button onclick="toggleTheme()" class="text-gray-500 dark:text-yellow-400 hover:bg-gray-100 dark:hover:bg-brand-slate/30 p-2 rounded-full transition">
-            <i class="fas fa-sun hidden dark:block"></i>
-            <i class="fas fa-moon block dark:hidden"></i>
-        </button>
-      </div>
-
-      <nav class="flex-1 overflow-y-auto py-6 space-y-2 px-4" id="accordion-nav">
-        <!-- Item 1: Profile Group -->
-        <div class="nav-item group" data-group="profile">
-          <button class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition text-gray-600 dark:text-gray-300 hover:text-brand-navy dark:hover:text-white" onclick="manualToggle('nav-profile')">
-            <span class="flex items-center gap-3"><i class="fas fa-user w-5"></i> プロフィール</span>
-            <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:text-brand-gold"></i>
-          </button>
-          <div id="nav-profile" class="accordion-content pl-10">
-            <a href="#hero" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">Top</a>
-            <a href="#about" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">自己PR・強み</a>
-            <a href="#motivation" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">志望動機・展望</a>
           </div>
         </div>
-
-        <!-- Item 2: Timeline Group -->
-        <div class="nav-item group" data-group="timeline">
-            <button class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition text-gray-600 dark:text-gray-300 hover:text-brand-navy dark:hover:text-white" onclick="manualToggle('nav-timeline')">
-              <span class="flex items-center gap-3"><i class="fas fa-briefcase w-5"></i> 職務経歴</span>
-              <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
+        <nav class="flex-1 overflow-y-auto py-6 px-3 space-y-1">
+          <a href="#hero" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-home w-5 text-center group-hover:text-brand-gold"></i><span>トップ</span>
+          </a>
+          <a href="#about" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-user w-5 text-center group-hover:text-brand-gold"></i><span>プロフィール・強み</span>
+          </a>
+          <a href="#motivation" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-rocket w-5 text-center group-hover:text-brand-gold"></i><span>志望理由・経緯</span>
+          </a>
+          <a href="#experience1" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-briefcase w-5 text-center group-hover:text-brand-gold"></i><span>職務経歴書 (1/3)</span>
+          </a>
+          <a href="#experience2" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-history w-5 text-center group-hover:text-brand-gold"></i><span>職務経歴書 (2/3)</span>
+          </a>
+          <a href="#experience3" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-building-columns w-5 text-center group-hover:text-brand-gold"></i><span>職務経歴書 (3/3)</span>
+          </a>
+          <a href="#skills" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-code w-5 text-center group-hover:text-brand-gold"></i><span>技術スキルセット</span>
+          </a>
+          <a href="#portfolio" class="pc-nav-item flex items-center gap-3 p-3 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition-all group">
+            <i class="fas fa-laptop-code w-5 text-center group-hover:text-brand-gold"></i><span>開発・運用実績例</span>
+          </a>
+        </nav>
+        <div class="p-4 border-t border-gray-200 dark:border-brand-slate/30 text-center">
+            <!-- Icon Only Theme Toggle -->
+            <button onclick="toggleTheme()" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-brand-slate/20 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-brand-slate/40 transition flex items-center justify-center mx-auto">
+                <i class="fas fa-sun hidden dark:block text-lg"></i>
+                <i class="fas fa-moon block dark:hidden text-lg"></i>
             </button>
-            <div id="nav-timeline" class="accordion-content pl-10">
-              <a href="#experience" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">経歴詳細</a>
-            </div>
         </div>
+      </aside>
 
-        <!-- Item 3: Skills Group -->
-        <div class="nav-item group" data-group="skills">
-            <button class="w-full flex justify-between items-center p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition text-gray-600 dark:text-gray-300 hover:text-brand-navy dark:hover:text-white" onclick="manualToggle('nav-skills')">
-              <span class="flex items-center gap-3"><i class="fas fa-code w-5"></i> スキルセット</span>
-              <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>
-            </button>
-            <div id="nav-skills" class="accordion-content pl-10">
-              <a href="#skills" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">技術スタック</a>
-              <a href="#qualifications" class="block py-2 text-sm text-gray-500 dark:text-brand-muted hover:text-brand-gold transition-colors">保有資格</a>
-            </div>
-        </div>
+      <!-- MOBILE HEADER -->
+      <header class="lg:hidden fixed top-0 w-full z-50 bg-white/90 dark:bg-brand-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-brand-slate/30 h-[50px] flex items-center justify-between px-4 transition-colors duration-300">
+          <div class="flex items-center gap-2"><h1 class="text-lg font-bold text-brand-navy dark:text-white">Portfolio</h1></div>
+          <button onclick="toggleTheme()" class="text-gray-500 dark:text-yellow-400 p-2"><i class="fas fa-sun hidden dark:block"></i><i class="fas fa-moon block dark:hidden"></i></button>
+      </header>
 
-        <!-- Item 4: Portfolio Group (Direct Link) -->
-        <div class="nav-item group" data-group="portfolio">
-            <a href="#portfolio" class="w-full flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-brand-navy/30 transition text-gray-600 dark:text-gray-300 hover:text-brand-navy dark:hover:text-white">
-                <i class="fas fa-laptop-code w-5"></i> <span>開発実績</span>
-            </a>
-        </div>
-      </nav>
-    </aside>
-
-    <!-- MOBILE HEADER (Sticky) -->
-    <header id="header-mobile" class="lg:hidden fixed top-0 w-full z-40 bg-white/80 dark:bg-brand-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-brand-slate/30 transition-all duration-300">
-        <div class="flex justify-between items-center px-4 py-3">
-            <div>
-                <h1 class="text-lg font-bold text-brand-navy dark:text-white tracking-wide">Ryo.S</h1>
-                <p class="text-[10px] text-brand-gold">実務型DX推進・知財管理</p>
-            </div>
-            <div class="flex items-center gap-4">
-                <!-- Theme Toggle Mobile -->
-                <button onclick="toggleTheme()" class="text-gray-500 dark:text-yellow-400 p-2">
-                    <i class="fas fa-sun hidden dark:block"></i>
-                    <i class="fas fa-moon block dark:hidden"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- MAIN CONTENT AREA -->
-    <main id="main-content" class="lg:ml-72 flex-1 min-h-screen relative pb-24 lg:pb-10">
+      <!-- MAIN SCROLL CONTENT AREA -->
+      <main id="main-scroll-container" class="flex-1 relative bg-brand-light dark:bg-brand-dark w-full">
         
-        <!-- Hero / Top Section -->
-        <section id="hero" class="relative pt-32 pb-20 px-6 md:px-12 lg:px-20 overflow-hidden flex flex-col justify-center min-h-[60vh]">
-            <!-- Background Decoration -->
-            <div class="absolute top-0 right-0 w-96 h-96 bg-brand-navy/10 dark:bg-brand-navy/20 rounded-full blur-3xl -z-10 no-print transition-colors duration-300"></div>
-            <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-gold/10 dark:bg-brand-gold/10 rounded-full blur-3xl -z-10 no-print transition-colors duration-300"></div>
+        <!-- SECTION 1: HERO -->
+        <section id="hero" class="snap-section flex flex-col justify-center items-center px-6 md:px-12 pt-[60px] lg:pt-0">
+          <div class="container mx-auto max-w-5xl h-full flex flex-col justify-center relative py-10 lg:py-0">
+             <div class="absolute top-1/4 right-0 w-64 h-64 md:w-96 md:h-96 bg-brand-navy/10 dark:bg-brand-navy/20 rounded-full blur-3xl -z-10 pointer-events-none"></div>
+             <div class="absolute bottom-1/4 left-0 w-48 h-48 md:w-64 md:h-64 bg-brand-gold/10 dark:bg-brand-gold/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
 
-            <div class="reveal-on-scroll">
+             <div class="reveal-on-scroll text-center lg:text-left">
                 <p class="text-brand-gold font-bold mb-4 tracking-widest uppercase text-sm">Portfolio & Resume</p>
-                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight text-brand-navy dark:text-white transition-colors duration-300">
-                    現場の実務とIT技術を統合し、<br class="hidden md:block">
-                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-brand-gold dark:from-blue-400 dark:to-brand-gold">組織の課題を解決する</span>実務家。
+                <h1 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight text-brand-navy dark:text-white">
+                    <br>現場の課題を<br class="lg:hidden">最先端エンジニアリングで解決する<br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-brand-gold dark:from-blue-400 dark:to-brand-gold">「実務型DX推進力」</span>
                 </h1>
-                <p class="text-gray-600 dark:text-brand-muted text-lg md:text-xl max-w-2xl leading-relaxed mt-4 transition-colors duration-300">
-                    私のキャリアの最大の特徴は、「泥臭い現場実務」と「最先端エンジニアリング」の高度な融合にあります。<br>
-                    IT予算や専任担当が不在の環境下であっても、Pythonや生成AI（Gemini/Claude）を駆使して自ら業務システムを設計・実装し、組織の生産性を向上させる「実務型DX」を推進します。
-                </p>
-            </div>
-        </section>
-
-        <!-- About / Competency -->
-        <section id="about" class="px-6 md:px-12 lg:px-20 py-16 border-t border-gray-200 dark:border-brand-slate/20 transition-colors duration-300">
-            <!-- Mobile Sticky Header -->
-            <h2 class="section-title text-2xl font-bold text-brand-navy dark:text-white mb-10 flex items-center gap-3 sticky-header-mobile bg-white/95 dark:bg-brand-dark/95 border-gray-200 dark:border-brand-slate/30 text-gray-900 lg:static lg:bg-transparent lg:p-0 lg:m-0 lg:mb-10 lg:border-none lg:shadow-none transition-colors duration-300">
-                <span class="w-1 h-8 bg-brand-gold block rounded"></span>
-                自己PR・強み
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-                <!-- Left Column: Strengths -->
-                <div class="reveal-on-scroll space-y-6">
-                    <p class="text-gray-600 dark:text-gray-300 leading-relaxed text-justify transition-colors duration-300">
-                        私の最大の強みは、<strong>「法務・管理部門の実務知識」</strong>と<strong>「生成AI・API活用を含むエンジニアリングスキル」</strong>を高度に兼ね備え、コストをかけずに業務フローを変革できる点にあります。単なるツールの使い手ではなく、業務のボトルネックを特定し、実装まで一貫して行える「実務型DX人材」として貢献します。
-                    </p>
-                    <ul class="space-y-4 mt-6">
-                        <li class="flex items-start gap-3 bg-white dark:bg-brand-slate/20 p-4 rounded hover-card border border-gray-100 dark:border-transparent shadow-sm dark:shadow-none transition-colors duration-300">
-                            <i class="fas fa-terminal text-brand-gold mt-1"></i>
-                            <div>
-                                <strong class="block text-brand-navy dark:text-white">「コストゼロ」で成果を出す、実践的なDX推進力</strong>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">有料ツール導入予算が下りない中、Pythonスクレイピングツールを自作。週10時間の検索業務を30分に短縮（95%削減）し、浮いたリソースで案件受注に貢献。</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3 bg-white dark:bg-brand-slate/20 p-4 rounded hover-card border border-gray-100 dark:border-transparent shadow-sm dark:shadow-none transition-colors duration-300">
-                            <i class="fas fa-balance-scale text-brand-gold mt-1"></i>
-                            <div>
-                                <strong class="block text-brand-navy dark:text-white">官公庁・大手企業との「権利ビジネス」推進経験</strong>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">複雑な仕様書の読解、契約約款の確認、屋外広告物条例等の法規制クリアといった「守りの業務」と、企画提案・折衝といった「攻めの業務」を両立。</span>
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-3 bg-white dark:bg-brand-slate/20 p-4 rounded hover-card border border-gray-100 dark:border-transparent shadow-sm dark:shadow-none transition-colors duration-300">
-                            <i class="fas fa-building text-brand-gold mt-1"></i>
-                            <div>
-                                <strong class="block text-brand-navy dark:text-white">「一人支社」を回し切る完遂力とバックオフィス経験</strong>
-                                <span class="text-sm text-gray-500 dark:text-gray-400">上長のいない遠隔地にて、総務・経理・営業・制作・入札の全業務をワンオペレーションで完遂。IT・デザインスキルを総動員して自律的に業務フローを構築。</span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
                 
-                <!-- Right Column: Radar Chart -->
-                <div class="flex flex-col gap-6">
-                    <div class="reveal-on-scroll chart-wrapper bg-white dark:bg-white/5 p-4 rounded-lg border border-gray-200 dark:border-white/10 shadow-md dark:shadow-none flex flex-col items-center justify-center transition-colors duration-300">
-                        <h4 class="text-center mb-4 text-gray-500 dark:text-gray-300 text-sm">AIによる評価</h4>
-                        <div style="position: relative; width: 100%; height: 300px;">
-                            <canvas id="competencyRadar"></canvas>
+                <!-- Profile Summary -->
+                <div class="flex flex-col md:flex-row items-center md:items-start justify-center lg:justify-start gap-4 mb-6 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="flex items-center"><i class="fas fa-user mr-2"></i>1993年生</span>
+                    <span class="hidden md:inline">|</span>
+                    <span class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i>愛知県名古屋市 在住</span>
+                </div>
+
+                <p class="text-gray-600 dark:text-brand-muted text-base md:text-xl max-w-2xl leading-relaxed mx-auto lg:mx-0 text-justify">
+                    私のキャリアの最大の特徴は、<strong>「泥臭い現場実務」</strong>と<strong>「最先端エンジニアリングによる課題解決」</strong>の高度な融合にあります。IT予算や専任担当が不在の環境下であっても、Pythonや生成AI（Gemini等）を駆使して自ら業務システムを設計・実装し、組織の生産性を向上させる「実務型DX」を得意としています。
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                    <a href="#about" class="px-8 py-3 bg-brand-navy text-white rounded-full font-bold shadow-lg hover:bg-blue-800 transition transform hover:-translate-y-1">詳しく見る</a>
+                    <a href="#portfolio" class="px-8 py-3 border border-brand-navy dark:border-white text-brand-navy dark:text-white rounded-full font-bold hover:bg-brand-navy/10 dark:hover:bg-white/10 transition">開発実績</a>
+                </div>
+             </div>
+             
+             <!-- Scroll Indicator -->
+             <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-gray-400 dark:text-gray-600 hidden lg:block">
+                 <i class="fas fa-chevron-down"></i>
+             </div>
+          </div>
+        </section>
+
+        <!-- SECTION 2: ABOUT -->
+        <section id="about" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex items-center">
+            <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">自己PR・強み</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Profile & Strengths</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    <div class="reveal-on-scroll space-y-6">
+                        <div class="space-y-4">
+                            <div class="card-item p-4 rounded border-gray-200">
+                                <h3 class="font-bold text-brand-navy dark:text-white flex items-center gap-2">
+                                    <i class="fas fa-terminal text-brand-gold"></i>
+                                    「コストゼロ」で成果を出すDX推進力
+                                </h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                                    有料ツール導入予算が下りない中、Pythonスクレイピングツールを自作。週10時間かかっていた検索業務を「確認のみの30分」に短縮（約95%削減）し、浮いたリソースで案件受注に貢献しました。
+                                </p>
+                            </div>
+                            <div class="card-item p-4 rounded border-gray-200">
+                                <h3 class="font-bold text-brand-navy dark:text-white flex items-center gap-2">
+                                    <i class="fas fa-balance-scale text-brand-gold"></i>
+                                    権利ビジネス・法務実務経験
+                                </h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                                    仕様書の読解、契約約款の確認、屋外広告物条例等の法規制クリアといった「守り」の業務と、企画提案・折衝といった「攻め」の業務を両立できます。
+                                </p>
+                            </div>
+                            <div class="card-item p-4 rounded border-gray-200">
+                                <h3 class="font-bold text-brand-navy dark:text-white flex items-center gap-2">
+                                    <i class="fas fa-building text-brand-gold"></i>
+                                    一人支社を回し切る完遂力
+                                </h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                                    上長のいない遠隔地にて、総務・経理・営業・制作・入札の全業務をワンオペレーションで完遂。IT・デザインスキルを総動員して自律的に業務フローを構築しました。
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Motivation & Future Outlook -->
-        <section id="motivation" class="px-6 md:px-12 lg:px-20 py-16 border-t border-gray-200 dark:border-brand-slate/20 transition-colors duration-300">
-            <!-- Mobile Sticky Header -->
-            <h2 class="section-title text-2xl font-bold text-brand-navy dark:text-white mb-10 flex items-center gap-3 sticky-header-mobile bg-white/95 dark:bg-brand-dark/95 border-gray-200 dark:border-brand-slate/30 text-gray-900 lg:static lg:bg-transparent lg:p-0 lg:m-0 lg:mb-10 lg:border-none lg:shadow-none transition-colors duration-300">
-                <span class="w-1 h-8 bg-brand-gold block rounded"></span>
-                志望動機・今後の展望
-            </h2>
-
-            <div class="reveal-on-scroll grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Motivation -->
-                <div class="bg-blue-50/50 dark:bg-brand-navy/20 p-6 rounded-lg border border-blue-100 dark:border-brand-navy/50 shadow-sm transition-colors duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-100 dark:bg-brand-navy/40 rounded-full blur-xl opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
-                    <h3 class="text-lg font-bold text-brand-navy dark:text-white mb-3 border-b border-gray-200 dark:border-brand-slate/50 pb-2 relative z-10">
-                        <i class="fas fa-home text-brand-gold mr-2"></i>志望動機・背景
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed text-justify relative z-10">
-                        東北支社での業務には大きな裁量とやりがいを感じておりましたが、実父の介護（サポート）のため名古屋への帰郷が必須となり、やむなく休職を選択いたしました。現在は家族の協力体制が整い、<strong class="text-brand-navy dark:text-white">フルタイムでの勤務が可能な状態</strong>です。
-                    </p>
-                </div>
-
-                <!-- Future Outlook -->
-                <div class="bg-amber-50/50 dark:bg-brand-navy/20 p-6 rounded-lg border border-amber-100 dark:border-brand-navy/50 shadow-sm transition-colors duration-300 relative overflow-hidden group">
-                    <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-100 dark:bg-brand-gold/20 rounded-full blur-xl opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
-                    <h3 class="text-lg font-bold text-brand-navy dark:text-white mb-3 border-b border-gray-200 dark:border-brand-slate/50 pb-2 relative z-10">
-                        <i class="fas fa-rocket text-brand-gold mr-2"></i>今後の展望
-                    </h3>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed text-justify relative z-10">
-                        「法務・管理実務」と「エンジニアリング（Python/生成AI）」を融合させ、<strong>知財管理部門のDX推進</strong>や、<strong>管理部門向けSaaSの導入支援</strong>など、現場の痛みを知る実務家だからこそできる課題解決に挑戦したいと考えています。
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Experience Timeline -->
-        <section id="experience" class="px-6 md:px-12 lg:px-20 py-16 border-t border-gray-200 dark:border-brand-slate/20 transition-colors duration-300">
-             <!-- Mobile Sticky Header -->
-            <h2 class="section-title text-2xl font-bold text-brand-navy dark:text-white mb-12 flex items-center gap-3 sticky-header-mobile bg-white/95 dark:bg-brand-dark/95 border-gray-200 dark:border-brand-slate/30 text-gray-900 lg:static lg:bg-transparent lg:p-0 lg:m-0 lg:mb-12 lg:border-none lg:shadow-none transition-colors duration-300">
-                <span class="w-1 h-8 bg-brand-gold block rounded"></span>
-                職務経歴詳細
-            </h2>
-
-            <div class="space-y-12 relative border-l-2 border-gray-200 dark:border-brand-slate/30 ml-3 md:ml-6 pl-8 md:pl-12 transition-colors duration-300">
-                <!-- Job 1: Kids Promotion -->
-                <div class="reveal-on-scroll relative project-item">
-                    <div class="absolute -left-[41px] md:-left-[58px] top-0 w-5 h-5 bg-brand-gold rounded-full border-4 border-white dark:border-brand-dark transition-colors duration-300"></div>
                     
-                    <div class="mb-4">
-                        <span class="text-sm text-brand-gold font-bold">2022年1月 - 現在 (在職中・休職中)</span>
-                        <h3 class="text-xl md:text-2xl font-bold text-brand-navy dark:text-white mt-1">株式会社キッズプロモーション <span class="text-base font-normal text-gray-500 dark:text-gray-400 block md:inline md:ml-2">東北支社 支社責任者</span></h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">総合広告代理店（OOH・メディア開発） | 正社員</p>
+                    <div class="reveal-on-scroll flex flex-col gap-6 w-full">
+                        <div class="chart-wrapper bg-white dark:bg-white/5 p-4 rounded-lg card-item border-gray-200 flex flex-col items-center justify-center h-[300px] md:h-[400px]">
+                            <h4 class="text-center mb-2 text-gray-500 dark:text-gray-300 text-xs md:text-sm">AIによるコンピテンシー評価</h4>
+                            <div class="relative w-full h-full">
+                                <canvas id="competencyRadar"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: MOTIVATION & BACKGROUND -->
+        <section id="motivation" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex items-center bg-gray-50 dark:bg-black/10">
+             <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">志望理由・経緯</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Reason for Application & Background</p>
+                </div>
+
+                <div class="reveal-on-scroll grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Reason / Future (Left) -->
+                    <div class="card-item p-8 rounded-xl border-amber-100 dark:border-brand-navy/50 relative overflow-hidden group order-1">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-amber-100 dark:bg-brand-gold/20 rounded-full blur-2xl opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
+                        <h3 class="text-xl font-bold text-brand-navy dark:text-white mb-4 border-b border-gray-200 dark:border-brand-slate/50 pb-3 relative z-10">
+                            <i class="fas fa-rocket text-brand-gold mr-3"></i>志望理由・今後の展望
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-base leading-relaxed text-justify relative z-10">
+                            これまで培ってきた「契約・法務実務」「バックオフィス運営」という守りの経験と、独自に磨いてきた「IT・DXスキル」という攻めの武器を融合させ、より専門性の高い領域で貢献したいと考えております。<br><br>
+                            具体的には、<strong>知財管理部門のDX推進</strong>や、<strong>管理部門向けSaaSの導入支援</strong>など、現場の痛みを知る実務家だからこそできる本質的な課題解決に挑戦したいと考えています。
+                        </p>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-6">
-                        <!-- Card: Branch & Backoffice -->
-                         <div class="bg-white dark:bg-brand-slate/20 p-6 rounded-lg hover-card border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none transition-colors duration-300">
-                            <h4 class="font-bold text-green-600 dark:text-green-300 mb-2 border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-building mr-2"></i>拠点立ち上げ・バックオフィス統括</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                <li><strong>拠点開設実務:</strong> 事務所選定、インフラ手配、税務・労基署への届出対応、社内NW構築を単独で完遂。</li>
-                                <li><strong>バックオフィス全般:</strong> 小口現金管理、請求・入金消込、月次報告。支社コストの予実管理と削減施策の実施。</li>
-                                <li><strong>法務・契約管理:</strong> 日本郵便や商業施設との契約締結交渉（ドラフト作成・条文精査）。屋外広告物条例に基づく許認可申請、施工安全書類の作成。</li>
-                            </ul>
-                        </div>
+                    <!-- Background (Right) -->
+                    <div class="card-item p-8 rounded-xl border-gray-200 dark:border-brand-slate/30 relative overflow-hidden group order-2">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-gray-100 dark:bg-brand-navy/40 rounded-full blur-2xl opacity-50 group-hover:scale-125 transition-transform duration-500"></div>
+                        <h3 class="text-xl font-bold text-brand-navy dark:text-white mb-4 border-b border-gray-200 dark:border-brand-slate/50 pb-3 relative z-10">
+                            <i class="fas fa-history text-gray-500 dark:text-gray-400 mr-3"></i>経緯
+                        </h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-base leading-relaxed text-justify relative z-10">
+                            東北支社での業務には大きな裁量とやりがいを感じておりましたが、名古屋在住の実父の介護サポートが必要となり、物理的な距離の制約からやむなく休職・帰郷を選択いたしました。<br><br>
+                            現在は家族の協力体制が整い、<strong>フルタイムでの勤務が可能</strong>となりました。この環境変化を機に、新たなキャリアへの挑戦を決意いたしました。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-                        <!-- Card: DX & Engineering -->
-                        <div class="bg-white dark:bg-brand-slate/20 p-6 rounded-lg hover-card border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none transition-colors duration-300">
-                            <h4 class="font-bold text-blue-600 dark:text-blue-300 mb-2 border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-robot mr-2"></i>実務型DX・エンジニアリング活用</h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">「IT担当不在」「予算ゼロ」の環境下で、Python/GASを活用し業務変革を実現。</p>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                <li><strong>入札情報自動収集システム:</strong> Pythonでスクレイピングツールを自作。東北6県の案件を自動巡回・リスト化。検索工数を<span class="text-brand-navy dark:text-white font-bold">週10時間→30分（95%削減）</span>へ圧縮。</li>
-                                <li><strong>生成AI活用:</strong> Gemini Advanced API等を活用し、仕様書要約、企画書構成案、契約書チェックのフローを構築。リソース不足をテクノロジーで補完。</li>
-                            </ul>
+        <!-- SECTION 4: EXPERIENCE 1/3 (TOHOKU) -->
+        <section id="experience1" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex flex-col justify-center">
+             <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">職務経歴書 (1/3)</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Experience: Current Role</p>
+                </div>
+
+                <div class="space-y-8 relative border-l-2 border-gray-200 dark:border-brand-slate/30 ml-2 pl-6 md:pl-10">
+                    <!-- Job 1 -->
+                    <div class="reveal-on-scroll relative">
+                        <div class="absolute -left-[33px] md:-left-[49px] top-0 w-4 h-4 md:w-5 md:h-5 bg-brand-gold rounded-full border-4 border-white dark:border-brand-dark"></div>
+                        <div class="mb-4">
+                            <span class="text-xs md:text-sm text-brand-gold font-bold bg-brand-gold/10 px-2 py-1 rounded inline-block mb-1">2024.01 - 現在</span>
+                            <h3 class="text-lg md:text-2xl font-bold text-brand-navy dark:text-white">株式会社キッズプロモーション <span class="text-sm md:text-base font-normal text-gray-500 block md:inline md:ml-2">東北支社 支社責任者</span></h3>
                         </div>
                         
-                        <!-- Card: Biz Dev -->
-                        <div class="bg-white dark:bg-brand-slate/20 p-6 rounded-lg hover-card border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none transition-colors duration-300">
-                            <h4 class="font-bold text-yellow-600 dark:text-yellow-300 mb-2 border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-handshake mr-2"></i>OOHメディア開発・新規開拓</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                <li><strong>権利ビジネス:</strong> 日本郵便、ドン・キホーテ、仙台パルコ等の施設オーナーに対し、空間の広告媒体化を提案・契約締結。東北エリアの独占的媒体網を構築。</li>
-                                <li><strong>新規開拓:</strong> 顧客基盤ゼロからテレアポ・紹介営業で<span class="text-brand-navy dark:text-white font-bold">約50社の新規取引を開拓</span>。（主要取引先：生協、地元マスコミ、食品メーカー等）</li>
-                            </ul>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                             <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-green-600 dark:text-green-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-building mr-2"></i>拠点立ち上げ・運営</h4>
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>事務所選定、インフラ手配、各種行政届出を単独完遂。</li>
+                                    <li>日本郵便や大手商業施設との媒体契約交渉・管理。</li>
+                                    <li>屋外広告物許可申請などの許認可実務の遂行。</li>
+                                </ul>
+                            </div>
+                            <div class="card-item p-6 rounded-lg border-l-4 border-blue-500 dark:border-blue-400 shadow-md h-full">
+                                <h4 class="font-bold text-blue-600 dark:text-blue-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-robot mr-2"></i>実務型DXの推進</h4>
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li><strong>収集自動化:</strong> Pythonで入札情報の自動収集システムを自作。週10時間の検索業務を30分に短縮。</li>
+                                    <li><strong>AI連携:</strong> Gemini API等を活用し、契約書チェックフロー確立。</li>
+                                </ul>
+                            </div>
+                            <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-yellow-600 dark:text-yellow-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-search-plus mr-2"></i>新規開拓営業</h4>
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>顧客基盤ゼロから約1年半で<strong>50社近い新規取引先を開拓</strong>。</li>
+                                    <li>大手広告代理店への卸と地元企業への直販による黒字化達成。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: EXPERIENCE 2/3 (CHUBU) -->
+        <section id="experience2" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex flex-col justify-center">
+             <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">職務経歴書 (2/3)</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Experience: Previous Role (Chubu)</p>
+                </div>
+
+                <div class="space-y-12 relative border-l-2 border-gray-200 dark:border-brand-slate/30 ml-2 pl-6 md:pl-10">
+                    <!-- Job 2: Chubu -->
+                    <div class="reveal-on-scroll relative">
+                        <div class="absolute -left-[33px] md:-left-[49px] top-0 w-4 h-4 md:w-5 md:h-5 bg-brand-slate rounded-full border-4 border-white dark:border-brand-dark"></div>
+                        <div class="mb-4">
+                            <span class="text-xs md:text-sm text-gray-500 font-bold bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded inline-block mb-1">2022.01 - 2024.03</span>
+                            <h3 class="text-lg md:text-2xl font-bold text-brand-navy dark:text-white">株式会社キッズプロモーション <span class="text-sm md:text-base font-normal text-gray-500 block md:inline md:ml-2">中部支社 企画営業</span></h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                             <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-yellow-600 dark:text-yellow-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-handshake mr-2"></i>代理店・ルート営業</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-300">既存顧客や電通・博報堂系列などの大手広告代理店に対するルート営業および企画提案、受注活動の完遂。</p>
+                            </div>
+                            <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-purple-600 dark:text-purple-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-map-marked-alt mr-2"></i>OOHメディア開発</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-300">「サカエチカ」や郵便局内など、有力な公共・商業施設オーナーに対する広告枠の媒体化交渉と契約管理。</p>
+                            </div>
+                            <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-orange-600 dark:text-orange-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-hard-hat mr-2"></i>施工管理・許認可</h4>
+                                <p class="text-xs text-gray-600 dark:text-gray-300">広告物の製作進行管理および現場安全管理。条例に基づく屋外広告物許可申請などの法務実務を単独遂行。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: EXPERIENCE 3/3 (PENSION) -->
+        <section id="experience3" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex flex-col justify-center">
+             <div class="container mx-auto max-w-5xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">職務経歴書 (3/3)</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Experience: Previous Role (Pension)</p>
+                </div>
+
+                <div class="space-y-12 relative border-l-2 border-gray-200 dark:border-brand-slate/30 ml-2 pl-6 md:pl-10">
+                    <!-- Job 3: Pension -->
+                    <div class="reveal-on-scroll relative">
+                        <div class="absolute -left-[33px] md:-left-[49px] top-0 w-4 h-4 md:w-5 md:h-5 bg-brand-slate rounded-full border-4 border-white dark:border-brand-dark"></div>
+                        <div class="mb-4">
+                            <span class="text-xs md:text-sm text-gray-500 font-bold bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded inline-block mb-1">2017.10 - 2020.03</span>
+                            <h3 class="text-lg md:text-2xl font-bold text-brand-navy dark:text-white">日本年金機構 <span class="text-sm md:text-base font-normal text-gray-500 block md:inline md:ml-2">名古屋広域事務センター</span></h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-purple-600 dark:text-purple-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-file-contract mr-2"></i>厳格な事務処理・審査</h4>
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>4県集約の国民年金届書の集中審査・入力（月間数千件）。</li>
+                                    <li>国民年金法に基づく厳格な審査と不備返戻処理の徹底。</li>
+                                    <li>マイナンバー等の特定個人情報の厳重な管理・運用。</li>
+                                </ul>
+                            </div>
+                            <div class="card-item p-6 rounded-lg border-gray-200 h-full">
+                                <h4 class="font-bold text-orange-600 dark:text-orange-300 mb-3 text-base border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-tools mr-2"></i>VBAによる業務改善</h4>
+                                <ul class="list-disc list-inside space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                                    <li>Excel VBAによる集計自動化ツールの開発（月10h削減）。</li>
+                                    <li>通知書自動作成ツールの構築により、手書き・転記ミス根絶。</li>
+                                    <li>新人教育マニュアルの整備による属人化解消の推進。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7: SKILLS -->
+        <section id="skills" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex items-center bg-gray-50 dark:bg-black/10">
+            <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">技術スキルセット</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 lg:pl-0">Tech Stack & Qualifications</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Chart -->
+                    <div class="reveal-on-scroll bg-white dark:bg-white/5 p-6 rounded-lg card-item border-gray-200 h-[300px] flex flex-col">
+                        <h4 class="text-sm font-bold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-code text-brand-gold mr-2"></i>エンジニアリングスキル</h4>
+                        <div class="relative w-full flex-1">
+                            <canvas id="techSkillsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Text List -->
+                    <div class="reveal-on-scroll grid grid-cols-1 gap-4 content-start">
+                        <div class="card-item p-5 rounded border-gray-200 border-l-4 border-l-purple-500">
+                            <h5 class="text-purple-600 dark:text-purple-300 font-bold mb-1 text-sm md:text-base">Generative AI / LLM</h5>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                <strong>Gemini Advanced, Claude, Copilot</strong><br>
+                                実務の中核。要件定義、コード生成、ドキュメント作成のメインパートナー。APIをPython/GASに組み込み業務ツール構築。
+                            </p>
+                        </div>
+                        
+                        <div class="card-item p-5 rounded border-gray-200 border-l-4 border-l-blue-500">
+                            <h5 class="text-blue-600 dark:text-blue-300 font-bold mb-1 text-sm md:text-base">Automation / API</h5>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                <strong>n8n, Webhook (Messaging API), Google Workspace (GAS)</strong><br>
+                                Messaging APIを活用した通知ボット作成や、Googleアプリ連携によるワークフロー自動化。
+                            </p>
+                        </div>
+
+                        <div class="card-item p-5 rounded border-gray-200 border-l-4 border-l-cyan-500">
+                            <h5 class="text-cyan-600 dark:text-cyan-300 font-bold mb-1 text-sm md:text-base">Backend / Infra (Learning)</h5>
+                            <p class="text-xs md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                                <strong>Python, Docker, Cloudflare</strong><br>
+                                スクレイピングツール開発、コンテナ環境構築、Cloudflare Pagesによるサイト運用。
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Job 2: Pension Service -->
-                <div class="reveal-on-scroll relative project-item">
-                    <div class="absolute -left-[41px] md:-left-[58px] top-0 w-5 h-5 bg-brand-slate rounded-full border-4 border-white dark:border-brand-dark transition-colors duration-300"></div>
+                <!-- Qualifications -->
+                 <div class="mt-8">
+                    <h4 class="text-sm font-bold text-gray-500 dark:text-gray-400 mb-3">保有資格</h4>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="card-item bg-white dark:bg-brand-slate/20 border-gray-200 px-3 py-1 rounded text-xs text-brand-navy dark:text-white flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>知的財産管理技能士 3級 <span class="text-[10px] text-gray-500 ml-1">(2025年)</span></span>
+                        <span class="card-item bg-white dark:bg-brand-slate/20 border-gray-200 px-3 py-1 rounded text-xs text-brand-navy dark:text-white flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>屋外広告士 <span class="text-[10px] text-gray-500 ml-1">(2025年)</span></span>
+                        <span class="card-item bg-white dark:bg-brand-slate/20 border-gray-200 px-3 py-1 rounded text-xs text-brand-navy dark:text-white flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>ITパスポート <span class="text-[10px] text-gray-500 ml-1">(2021年)</span></span>
+                        <span class="card-item bg-white dark:bg-brand-slate/20 border-gray-200 px-3 py-1 rounded text-xs text-brand-navy dark:text-white flex items-center"><i class="fas fa-check text-green-500 mr-2"></i>ウェブデザイン技能士 3級 <span class="text-[10px] text-gray-500 ml-1">(2021年)</span></span>
+                        <span class="card-item bg-blue-50 dark:bg-blue-900/20 border-blue-200 px-3 py-1 rounded text-xs text-brand-navy dark:text-blue-200 flex items-center"><i class="fas fa-book-reader text-blue-500 mr-2"></i>応用情報技術者 <span class="text-[10px] text-gray-500 ml-1">(学習中)</span></span>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <!-- SECTION 8: PORTFOLIO -->
+        <section id="portfolio" class="snap-section px-6 md:px-12 pt-0 lg:pt-10 flex flex-col justify-center">
+            <div class="container mx-auto max-w-6xl min-h-min py-10 lg:py-0">
+                <div class="sticky-header-mobile mb-8 lg:mb-8 border-l-4 border-brand-gold pl-4 lg:bg-transparent lg:border-none lg:p-0">
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-navy dark:text-white lg:pl-0">開発・運用実績例</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 pl-3 lg:pl-0">Portfolio Works</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Project 1: Ecosystem Monorepo -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-purple-500 flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded font-bold">Web / Infra</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">Ecosystem Monorepo</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            Astro v5とCloudflare Workersを活用したモノレポ構成の企業サイト基盤。 Tailwind v4による共通UIライブラリとエッジネットワーク配信を統合し、高速な配信を実現。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Astro v5</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Cloudflare</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Picture to PDF -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-green-500 flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded font-bold">Desktop Tool</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">Picture to PDF (Ultimate)</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            画像/PDF変換・結合・OCRを一元管理するWindows向けアプリ。PaddleOCRによる日本語テキスト抽出、Markdown生成機能を統合。DnDおよび非同期処理に対応。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Python</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">PaddleOCR</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Download Organizer -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-blue-500 flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded font-bold">Desktop Tool</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">Download Organizer</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            特定フォルダの監視・自動整理ツール（v2.3）。Tkinter製GUIによる詳細設定管理が可能。ルールに基づいた自動振り分け、アーカイブ解凍、スタートアップ常駐に対応。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Python</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Tkinter</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Horse Racing DB -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-blue-900 flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-blue-50 text-blue-900 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded font-bold">Data Pipeline</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">Horse Racing DB</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            競馬データの収集・分析を行うパイプライン。PythonでのスクレイピングとPostgreSQLでのデータ管理を統合し、AIによる分析結果の通知までを自動化。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Python</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">PostgreSQL</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: GAS Kakeibo -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-yellow-500 flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-2 py-1 rounded font-bold">Automation</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">GAS Kakeibo</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            Gmail API経由で金融明細を自動解析し、スプレッドシートへ記帳する家計簿システム。正規表現を用いたパースにより、複数の金融機関に対応。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">GAS</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Gmail API</span>
+                        </div>
+                    </div>
+
+                    <!-- Project 6: Exam App -->
+                    <div class="card-item p-6 rounded-lg border-gray-200 border-t-4 border-t-brand-navy flex flex-col h-full">
+                        <div class="mb-3">
+                            <span class="text-[10px] bg-blue-100 text-brand-navy dark:bg-brand-navy dark:text-blue-200 px-2 py-1 rounded font-bold">Web App</span>
+                            <h4 class="text-base font-bold text-brand-navy dark:text-white mt-2">Exam App</h4>
+                        </div>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mb-4 flex-grow text-justify">
+                            資格試験の過去問演習用SPA。GASを軽量なバックエンドAPIとして利用し、Tailwind CSSを用いたモダンで直感的なUI設計を追求。
+                        </p>
+                        <div class="flex flex-wrap gap-1 text-[10px] text-gray-500 mt-auto">
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">GAS</span>
+                            <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">JS</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Footer -->
+                 <footer class="text-center mt-12 text-gray-400 text-xs pb-24 lg:pb-10">
+                    <!-- QR Code (Always Visible) -->
+                    <div id="portfolio-footer-qr" class="flex flex-col items-center justify-center mb-6 gap-2 border-t border-gray-200 dark:border-white/10 pt-6">
+                        <p class="text-sm font-bold text-brand-navy dark:text-white">Webポートフォリオで詳細を見る</p>
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://portfolio.nierina.com" alt="Portfolio QR" width="80" height="80">
+                        <p class="text-xs text-brand-navy dark:text-gray-400">https://portfolio.nierina.com</p>
+                    </div>
                     
-                    <div class="mb-4">
-                        <span class="text-sm text-gray-500 dark:text-gray-400 font-bold">2017年10月 - 2020年3月</span>
-                        <h3 class="text-xl md:text-2xl font-bold text-brand-navy dark:text-white mt-1">日本年金機構 <span class="text-base font-normal text-gray-500 dark:text-gray-400 block md:inline md:ml-2">名古屋広域事務センター</span></h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">一般事務・審査業務 | 正社員</p>
-                    </div>
+                    <!-- Tech Stack -->
+                    <p class="mb-2 text-xs opacity-80">
+                        This portfolio is built with: 
+                        <span class="text-brand-gold font-bold">Cloudflare Pages</span>, 
+                        <span class="text-brand-gold font-bold">Tailwind CSS</span>, 
+                        <span class="text-brand-gold font-bold">Chart.js</span>, 
+                        <span class="text-brand-gold font-bold">FontAwesome</span>, 
+                        & <span class="text-brand-gold font-bold">Gemini</span>.
+                    </p>
 
-                    <div class="grid grid-cols-1 gap-6">
-                        <!-- Card: Admin -->
-                         <div class="bg-white dark:bg-brand-slate/20 p-6 rounded-lg hover-card border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none transition-colors duration-300">
-                            <h4 class="font-bold text-purple-600 dark:text-purple-300 mb-2 border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-file-contract mr-2"></i>厳格な事務処理・審査業務</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                <li><strong>大量データ処理:</strong> 4県（愛知・岐阜・三重・静岡）から集約される国民年金届書（月間数千件）の審査・入力・データ管理。</li>
-                                <li><strong>法令遵守:</strong> 行政手続法・国民年金法に基づく厳格な審査基準の遵守と、不備返戻処理。</li>
-                                <li><strong>情報管理:</strong> 社会保険システムへの入力、エラー修正、特定個人情報（マイナンバー）の厳重な管理・運用。</li>
-                            </ul>
-                        </div>
-
-                        <!-- Card: Kaizen -->
-                        <div class="bg-white dark:bg-brand-slate/20 p-6 rounded-lg hover-card border border-gray-100 dark:border-white/5 shadow-sm dark:shadow-none transition-colors duration-300">
-                            <h4 class="font-bold text-orange-600 dark:text-orange-300 mb-2 border-b border-gray-100 dark:border-white/10 pb-2"><i class="fas fa-tools mr-2"></i>VBAによる業務改善 (EUC)</h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">紙媒体とレガシーシステムが混在する環境で、個人のITスキルを活用し改善を主導。</p>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-300 text-sm">
-                                <li><strong>自動集計ツール開発:</strong> Excel VBAを用い、課員全員の進捗管理表を自動収集・統合。集計時間を<span class="text-brand-navy dark:text-white font-bold">月間約10時間削減</span>し、転記ミスを根絶。</li>
-                                <li><strong>通知書自動作成:</strong> システムデータから不備通知書をワンクリックで印刷するツールを作成。マニュアル整備による属人化解消も達成。</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Leaving Reason (Print/Context friendly) -->
-                <div class="reveal-on-scroll mt-8 pt-4 border-t border-gray-200 dark:border-brand-slate/30 text-sm text-gray-500 dark:text-gray-400 italic">
-                    <p><i class="fas fa-info-circle mr-2"></i>退職・転職理由: 名古屋在住の実父の介護（サポート）が必要となり帰省しましたが、現在は家族の協力体制が整い、フルタイムでの就業が可能です。</p>
-                </div>
-
+                    <p>&copy; 2026 Ryo.S All Rights Reserved.</p>
+                </footer>
             </div>
         </section>
 
-        <!-- Skills & Tech Stack -->
-        <section id="skills" class="px-6 md:px-12 lg:px-20 py-16 border-t border-gray-200 dark:border-brand-slate/20 transition-colors duration-300">
-            <!-- Mobile Sticky Header -->
-            <h2 class="section-title text-2xl font-bold text-brand-navy dark:text-white mb-10 flex items-center gap-3 sticky-header-mobile bg-white/95 dark:bg-brand-dark/95 border-gray-200 dark:border-brand-slate/30 text-gray-900 lg:static lg:bg-transparent lg:p-0 lg:m-0 lg:mb-10 lg:border-none lg:shadow-none transition-colors duration-300">
-                <span class="w-1 h-8 bg-brand-gold block rounded"></span>
-                技術スキルセット
-            </h2>
+      </main>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Chart -->
-                <div class="reveal-on-scroll bg-white dark:bg-white/5 p-6 rounded-lg border border-gray-200 dark:border-white/10 shadow-md dark:shadow-none chart-wrapper transition-colors duration-300">
-                    <h4 class="text-lg font-bold text-gray-700 dark:text-gray-200 mb-4"><i class="fas fa-code text-brand-gold mr-2"></i>エンジニアリングスキル</h4>
-                    <div style="position: relative; width: 100%; height: 250px;">
-                        <canvas id="techSkillsChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Text List -->
-                <div class="reveal-on-scroll grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <!-- Generative AI -->
-                     <div class="bg-white dark:bg-brand-slate/20 p-5 rounded hover-card border-l-2 border-purple-500 sm:col-span-2 shadow-sm dark:shadow-none transition-colors duration-300">
-                        <h5 class="text-purple-600 dark:text-purple-300 font-bold mb-2">Generative AI / LLM</h5>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-2">
-                            <strong>Gemini Advanced, Claude, OpenAI API</strong>
-                        </p>
-                        <p class="text-xs text-gray-500">
-                            実務の中核として要件定義からコード生成まで活用。APIをPython/GASに組み込み、OCR処理や契約書チェックツールを構築。
-                        </p>
-                     </div>
-
-                     <div class="bg-white dark:bg-brand-slate/20 p-5 rounded hover-card border-l-2 border-blue-500 shadow-sm dark:shadow-none transition-colors duration-300">
-                        <h5 class="text-blue-600 dark:text-blue-300 font-bold mb-2">Lang / Backend</h5>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                            Python, GAS, VBA, HTML/CSS, PostgreSQL
-                        </p>
-                     </div>
-                     <div class="bg-white dark:bg-brand-slate/20 p-5 rounded hover-card border-l-2 border-orange-500 shadow-sm dark:shadow-none transition-colors duration-300">
-                        <h5 class="text-orange-600 dark:text-orange-300 font-bold mb-2">Infra / Tool</h5>
-                        <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                            Docker, Linux (Ubuntu), Cloudflare, Git/GitHub, VS Code
-                        </p>
-                     </div>
-                </div>
-            </div>
-            
-            <!-- Qualifications -->
-            <div id="qualifications" class="mt-8 reveal-on-scroll">
-                <h4 class="text-lg font-bold text-brand-navy dark:text-white mb-4"><i class="fas fa-certificate text-brand-gold mr-2"></i>保有資格・ライセンス</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white dark:bg-brand-slate/20 p-3 rounded border border-gray-200 dark:border-white/5 flex flex-col justify-center h-full hover-card shadow-sm dark:shadow-none transition-colors duration-300">
-                        <div class="flex items-center mb-1">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200 font-bold">知的財産管理技能士 3級</span>
-                        </div>
-                        <p class="text-xs text-gray-500 ml-6">2025年 取得 (2級学習中)</p>
-                    </div>
-                    <div class="bg-white dark:bg-brand-slate/20 p-3 rounded border border-gray-200 dark:border-white/5 flex flex-col justify-center h-full hover-card shadow-sm dark:shadow-none transition-colors duration-300">
-                        <div class="flex items-center mb-1">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200 font-bold">ITパスポート</span>
-                        </div>
-                        <p class="text-xs text-gray-500 ml-6">2021年 取得</p>
-                    </div>
-                    <div class="bg-white dark:bg-brand-slate/20 p-3 rounded border border-gray-200 dark:border-white/5 flex flex-col justify-center h-full hover-card shadow-sm dark:shadow-none transition-colors duration-300">
-                        <div class="flex items-center mb-1">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200 font-bold">屋外広告士</span>
-                        </div>
-                        <p class="text-xs text-gray-500 ml-6">2025年 取得</p>
-                    </div>
-                    <div class="bg-white dark:bg-brand-slate/20 p-3 rounded border border-gray-200 dark:border-white/5 flex flex-col justify-center h-full hover-card shadow-sm dark:shadow-none transition-colors duration-300">
-                        <div class="flex items-center mb-1">
-                            <i class="fas fa-check text-green-500 mr-2"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200 font-bold">ウェブデザイン技能士 3級</span>
-                        </div>
-                        <p class="text-xs text-gray-500 ml-6">2021年 取得</p>
-                    </div>
-                    <div class="bg-white dark:bg-brand-slate/20 p-3 rounded border border-gray-200 dark:border-white/5 flex flex-col justify-center h-full hover-card col-span-1 md:col-span-2 lg:col-span-4 border-l-4 border-l-blue-500 shadow-sm dark:shadow-none transition-colors duration-300">
-                        <div class="flex items-center mb-1">
-                            <i class="fas fa-book-reader text-blue-500 dark:text-blue-400 mr-2"></i>
-                            <span class="text-sm text-gray-700 dark:text-gray-200 font-bold">応用情報技術者</span>
-                        </div>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 ml-6">現在学習中 (2026年5月 受験予定)</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Grid -->
-        <section id="portfolio" class="px-6 md:px-12 lg:px-20 py-16 border-t border-gray-200 dark:border-brand-slate/20 transition-colors duration-300">
-             <!-- Mobile Sticky Header -->
-            <h2 class="section-title text-2xl font-bold text-brand-navy dark:text-white mb-10 flex items-center gap-3 sticky-header-mobile bg-white/95 dark:bg-brand-dark/95 border-gray-200 dark:border-brand-slate/30 text-gray-900 lg:static lg:bg-transparent lg:p-0 lg:m-0 lg:mb-10 lg:border-none lg:shadow-none transition-colors duration-300">
-                <span class="w-1 h-8 bg-brand-gold block rounded"></span>
-                開発・運用実績 (GitHub)
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                <!-- Project 1 -->
-                <div class="bg-white dark:bg-brand-slate/20 rounded-lg p-6 hover-card border-t-4 border-blue-500 flex flex-col h-full project-item shadow-sm dark:shadow-none transition-colors duration-300">
-                    <div class="mb-4">
-                        <span class="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 px-2 py-1 rounded">Web App</span>
-                        <h4 class="text-lg font-bold text-brand-navy dark:text-white mt-2">Exam App</h4>
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow">
-                        資格試験の過去問演習用SPA。GASをバックエンドAPIとして利用し、Tailwind CSSでレスポンシブUIを構築。
-                    </p>
-                    <div class="flex flex-wrap gap-2 text-xs text-gray-500 mt-auto">
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">GAS</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">JS</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Tailwind</span>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="bg-white dark:bg-brand-slate/20 rounded-lg p-6 hover-card border-t-4 border-green-500 flex flex-col h-full project-item shadow-sm dark:shadow-none transition-colors duration-300">
-                    <div class="mb-4">
-                        <span class="text-xs bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 px-2 py-1 rounded">Data Pipeline</span>
-                        <h4 class="text-lg font-bold text-brand-navy dark:text-white mt-2">Horse Racing DB</h4>
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow">
-                        スクレイピングによる競馬の定量データ収集、PostgreSQL格納、AIによるレース当日の定性データを収集・分析・買い目提示を一気通貫で行うパイプライン。
-                    </p>
-                    <div class="flex flex-wrap gap-2 text-xs text-gray-500 mt-auto">
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Python</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">PostgreSQL</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">PowerShell</span>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="bg-white dark:bg-brand-slate/20 rounded-lg p-6 hover-card border-t-4 border-yellow-500 flex flex-col h-full project-item shadow-sm dark:shadow-none transition-colors duration-300">
-                    <div class="mb-4">
-                        <span class="text-xs bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200 px-2 py-1 rounded">Desktop Tool</span>
-                        <h4 class="text-lg font-bold text-brand-navy dark:text-white mt-2">Picture to PDF</h4>
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow">
-                        複数画像をD&DでPDFへ一括変換・結合するGUIツール。事務作業効率化のため開発。
-                    </p>
-                    <div class="flex flex-wrap gap-2 text-xs text-gray-500 mt-auto">
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Python</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Tkinter</span>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="bg-white dark:bg-brand-slate/20 rounded-lg p-6 hover-card border-t-4 border-purple-500 flex flex-col h-full project-item shadow-sm dark:shadow-none transition-colors duration-300">
-                    <div class="mb-4">
-                        <span class="text-xs bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-2 py-1 rounded">Automation</span>
-                        <h4 class="text-lg font-bold text-brand-navy dark:text-white mt-2">GAS Kakeibo</h4>
-                    </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 flex-grow">
-                        金融明細データを解析し、スプレッドシートへ自動記帳する家計簿システム。
-                    </p>
-                    <div class="flex flex-wrap gap-2 text-xs text-gray-500 mt-auto">
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Gmail API</span>
-                        <span class="bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Regex</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="text-center py-10 text-gray-500 text-sm no-print border-t border-gray-200 dark:border-brand-slate/20 mt-10 transition-colors duration-300">
-            <p class="mb-2">&copy; 2026 Ryo.S All Rights Reserved.</p>
-            <p class="text-xs opacity-60">
-                This portfolio is built with: 
-                <span class="text-brand-gold">Tailwind CSS</span>, 
-                <span class="text-brand-gold">Chart.js</span>, 
-                <span class="text-brand-gold">Plotly.js</span>, 
-                <span class="text-brand-gold">FontAwesome</span>, 
-                & <span class="text-brand-gold">Gemini</span>.
-            </p>
-        </footer>
-
-    </main>
-
-    <!-- MOBILE BOTTOM NAVIGATION (Fixed, md:hidden) -->
-    <nav id="bottom-nav-mobile" class="lg:hidden fixed bottom-0 w-full bg-white/90 dark:bg-brand-dark/90 backdrop-blur-md border-t border-gray-200 dark:border-brand-slate/30 z-50 pb-safe transition-colors duration-300">
-        <div class="flex justify-around items-center h-16">
-            <a href="#hero" class="flex flex-col items-center text-gray-400 hover:text-brand-navy dark:hover:text-brand-gold transition p-2">
-                <i class="fas fa-home text-lg mb-1"></i>
-                <span class="text-[10px]">Top</span>
-            </a>
-            <a href="#about" class="flex flex-col items-center text-gray-400 hover:text-brand-navy dark:hover:text-brand-gold transition p-2">
-                <i class="fas fa-user text-lg mb-1"></i>
-                <span class="text-[10px]">About</span>
-            </a>
-            <a href="#experience" class="flex flex-col items-center text-gray-400 hover:text-brand-navy dark:hover:text-brand-gold transition p-2">
-                <i class="fas fa-briefcase text-lg mb-1"></i>
-                <span class="text-[10px]">Jobs</span>
-            </a>
-            <a href="#skills" class="flex flex-col items-center text-gray-400 hover:text-brand-navy dark:hover:text-brand-gold transition p-2">
-                <i class="fas fa-code text-lg mb-1"></i>
-                <span class="text-[10px]">Skills</span>
-            </a>
+      <!-- MOBILE BOTTOM NAV -->
+      <nav class="lg:hidden fixed bottom-0 w-full bg-white/95 dark:bg-brand-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-brand-slate/30 z-50 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <div class="flex justify-around items-center h-16 px-1">
+          <a href="#hero" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-colors"><i class="fas fa-home text-lg mb-1"></i><span class="text-[10px] font-medium">トップ</span></a>
+          <a href="#about" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-colors"><i class="fas fa-user text-lg mb-1"></i><span class="text-[10px] font-medium">自己紹介</span></a>
+          <a href="#experience1" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-colors"><i class="fas fa-briefcase text-lg mb-1"></i><span class="text-[10px] font-medium">職歴</span></a>
+          <a href="#skills" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-colors"><i class="fas fa-code text-lg mb-1"></i><span class="text-[10px] font-medium">スキル</span></a>
+           <a href="#portfolio" class="mobile-nav-item flex flex-col items-center justify-center w-full h-full text-gray-400 transition-colors"><i class="fas fa-layer-group text-lg mb-1"></i><span class="text-[10px] font-medium">実績</span></a>
         </div>
-    </nav>
+      </nav>
 
-    <!-- JS Logic -->
+    </div>
+
+    <!-- LOGIC -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
-        // Animation Observer
+        const mainContainer = document.getElementById('main-scroll-container');
+
+        // --- 1. Animation Observer ---
         const animationObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -750,177 +784,155 @@
               animationObserver.unobserve(entry.target);
             }
           });
-        }, { threshold: 0.1 });
-
+        }, { root: mainContainer, threshold: 0.1 });
         document.querySelectorAll('.reveal-on-scroll').forEach(el => animationObserver.observe(el));
 
-        // --- Auto Accordion & Active Link (ScrollSpy) ---
-        const sections = ['hero', 'about', 'motivation', 'experience', 'skills', 'portfolio'];
-        const sectionMap = {
-            'hero': 'profile',
-            'about': 'profile',
-            'motivation': 'profile',
-            'experience': 'timeline',
-            'skills': 'skills',
-            'qualifications': 'skills' // qualifications is part of skills section but has link
+        // --- 2. ScrollSpy ---
+        const pcLinks = document.querySelectorAll('.pc-nav-item');
+        const mobileLinks = document.querySelectorAll('.mobile-nav-item');
+        const scrollSpy = new IntersectionObserver((entries) => {
+           entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                   const id = entry.target.getAttribute('id');
+                   const hash = `#${id}`;
+                   
+                   pcLinks.forEach(link => link.getAttribute('href') === hash ? link.classList.add('active') : link.classList.remove('active'));
+                   
+                   mobileLinks.forEach(link => {
+                       const href = link.getAttribute('href');
+                       if (href === hash || (href === '#experience1' && (id === 'experience1' || id === 'experience2' || id === 'experience3'))) {
+                           link.classList.add('active');
+                           link.classList.remove('text-gray-400');
+                       } else if (id !== 'experience1' && id !== 'experience2' && id !== 'experience3') {
+                           if(href === hash) {
+                               // match
+                           } else {
+                               link.classList.remove('active');
+                               link.classList.add('text-gray-400');
+                           }
+                       }
+                   });
+               }
+           });
+        }, { root: mainContainer, threshold: 0.5 });
+        document.querySelectorAll('section').forEach(section => scrollSpy.observe(section));
+
+        // --- 3. Charts & Print Logic ---
+        Chart.defaults.font.family = '"Noto Sans JP", sans-serif';
+        const commonOptions = { maintainAspectRatio: false, plugins: { legend: { display: false } } };
+
+        const getTextColor = (isDark) => isDark ? "#e2e8f0" : "#000000";
+        const getGridColor = (isDark) => isDark ? "rgba(148, 163, 184, 0.2)" : "#cbd5e1";
+
+        const renderRadar = () => {
+             const ctx = document.getElementById("competencyRadar");
+             if(!ctx) return;
+             if(ctx.chart) ctx.chart.destroy();
+
+             const isDarkNow = document.documentElement.classList.contains('dark');
+             const textColor = getTextColor(isDarkNow);
+             const gridColor = getGridColor(isDarkNow);
+             const fillColor = isDarkNow ? "rgba(180, 83, 9, 0.2)" : "rgba(180, 83, 9, 0.5)";
+             
+             ctx.chart = new Chart(ctx, {
+                type: "radar",
+                data: {
+                    labels: ["法務・管理", "IT・開発", "企画・デザイン", "折衝・営業", "経理・総務"],
+                    datasets: [{
+                    label: "Skill Level", data: [8, 8, 7, 9, 10],
+                    backgroundColor: fillColor, 
+                    borderColor: "#b45309", 
+                    borderWidth: 2, 
+                    pointBackgroundColor: "#b45309", 
+                    pointBorderColor: "#fff",
+                    }]
+                },
+                options: {
+                    ...commonOptions,
+                    scales: {
+                    r: { 
+                        angleLines: { color: gridColor }, 
+                        grid: { color: gridColor }, 
+                        pointLabels: { 
+                            color: textColor, 
+                            font: { size: 12, weight: isDarkNow ? 'normal' : 'bold' }
+                        }, 
+                        suggestedMin: 0, suggestedMax: 10, 
+                        ticks: { display: false, backdropColor: 'transparent' } 
+                    }
+                    },
+                    animation: { duration: 1500, easing: 'easeOutQuart' }
+                }
+            });
         };
 
-        const accordions = document.querySelectorAll('.accordion-content');
-        const navLinks = document.querySelectorAll('#sidebar-pc nav a');
+        const renderBar = () => {
+            const ctx = document.getElementById("techSkillsChart");
+            if(!ctx) return;
+            if(ctx.chart) ctx.chart.destroy();
 
-        const scrollSpy = new IntersectionObserver((entries) => {
+            const isDarkNow = document.documentElement.classList.contains('dark');
+            const textColor = getTextColor(isDarkNow);
+            
+            ctx.chart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["Python", "Generative AI", "GAS/JS", "Infrastructure", "Design"],
+                    datasets: [{ label: "Level", data: [85, 95, 90, 70, 80], backgroundColor: ["#1e3a8a", "#9333ea", "#3b82f6", "#64748b", "#b45309"], borderRadius: 4 }]
+                },
+                options: {
+                    ...commonOptions, indexAxis: 'y',
+                    scales: { 
+                        x: { max: 100, grid: { display: false }, ticks: { display: false } }, 
+                        y: { 
+                            grid: { display: false }, 
+                            ticks: { 
+                                color: textColor, 
+                                font: { weight: 'bold', size: 11 } 
+                            } 
+                        } 
+                    },
+                    animation: { duration: 1500, easing: 'easeOutQuart', delay: 300 }
+                }
+            });
+        };
+
+        const chartObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    const group = sectionMap[id] || (id === 'portfolio' ? 'portfolio' : null);
-                    
-                    // 1. Update Active Link State
-                    navLinks.forEach(link => {
-                        link.classList.remove('text-brand-gold', 'font-bold', 'text-brand-navy', 'dark:text-white');
-                        link.classList.add('text-gray-500', 'dark:text-brand-muted');
-                        
-                        if(link.getAttribute('href') === `#${id}`) {
-                            link.classList.remove('text-gray-500', 'dark:text-brand-muted');
-                            link.classList.add('text-brand-gold', 'font-bold');
-                        }
-                    });
-
-                    // 2. Handle Accordion Expansion (PC Only)
-                    if(window.innerWidth >= 1024 && group && group !== 'portfolio') {
-                        // Close others
-                        document.querySelectorAll('.nav-item.group').forEach(item => {
-                            const content = item.querySelector('.accordion-content');
-                            const icon = item.querySelector('.fa-chevron-down');
-                            
-                            if (item.dataset.group === group) {
-                                if (content && !content.classList.contains('open')) {
-                                    content.classList.add('open');
-                                    // Reset explicit max-height to ensure CSS transition class works or set it
-                                    // We rely on CSS class 'open' for height, but CSS transition might need explicit height setting if switching from 0
-                                    // However, simpler is just toggle class.
-                                    if(icon) icon.style.transform = 'rotate(180deg)';
-                                }
-                            } else {
-                                if (content && content.classList.contains('open')) {
-                                    content.classList.remove('open');
-                                    if(icon) icon.style.transform = 'rotate(0deg)';
-                                }
-                            }
-                        });
-                    }
+                if(entry.isIntersecting) {
+                    if(entry.target.id === 'competencyRadar') { renderRadar(); chartObserver.unobserve(entry.target); }
+                    if(entry.target.id === 'techSkillsChart') { renderBar(); chartObserver.unobserve(entry.target); }
                 }
             });
-        }, { rootMargin: '-20% 0px -60% 0px' }); // Trigger when section is near top-center
-
-        // Observe main sections
-        document.querySelectorAll('section').forEach(section => {
-            scrollSpy.observe(section);
-        });
-        // Also observe qualifications div specifically if possible, otherwise it's covered by skills section
-        const qual = document.getElementById('qualifications');
-        if(qual) scrollSpy.observe(qual);
-      });
-      
-      // --- Manual Toggle for Accordions (Click) ---
-      // Allows user to manually open/close without scrolling (e.g. clicking header)
-      function manualToggle(targetId) {
-        const content = document.getElementById(targetId);
-        const btn = content.previousElementSibling;
-        const icon = btn.querySelector('.fa-chevron-down');
+        }, { root: mainContainer, threshold: 0.5 });
         
-        // Toggle current
-        if (content.classList.contains('open')) {
-            content.classList.remove('open');
-            icon.style.transform = 'rotate(0deg)';
-        } else {
-            // Close others first (Exclusive)
-            document.querySelectorAll('.accordion-content').forEach(acc => {
-                if(acc.id !== targetId) {
-                    acc.classList.remove('open');
-                    const otherBtn = acc.previousElementSibling;
-                    if(otherBtn) {
-                        const otherIcon = otherBtn.querySelector('.fa-chevron-down');
-                        if(otherIcon) otherIcon.style.transform = 'rotate(0deg)';
-                    }
-                }
-            });
-            content.classList.add('open');
-            icon.style.transform = 'rotate(180deg)';
-        }
-      }
+        const radarCanvas = document.getElementById("competencyRadar");
+        const barCanvas = document.getElementById("techSkillsChart");
+        if(radarCanvas) chartObserver.observe(radarCanvas);
+        if(barCanvas) chartObserver.observe(barCanvas);
 
-      // --- Security ---
-      document.addEventListener('contextmenu', e => e.preventDefault());
-      document.addEventListener('copy', e => e.preventDefault());
-      document.addEventListener('cut', e => e.preventDefault());
-      document.addEventListener('selectstart', e => e.preventDefault());
+        window.addEventListener('themeChanged', () => {
+            renderRadar();
+            renderBar();
+        });
 
-      // --- 3. Chart Configuration (Dark Mode Compatible) ---
-      Chart.defaults.font.family = '"Noto Sans JP", sans-serif';
-      const isDark = document.documentElement.classList.contains('dark');
-      Chart.defaults.color = isDark ? "#94a3b8" : "#475569";
-      Chart.defaults.borderColor = isDark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)";
-
-      // A. Competency Radar
-      const ctxRadar = document.getElementById("competencyRadar").getContext("2d");
-      new Chart(ctxRadar, {
-        type: "radar",
-        data: {
-          labels: ["法務・管理", "IT・開発", "クリエイティブ", "折衝・営業", "経理・総務"],
-          datasets: [{
-            label: "スキルレベル",
-            data: [8, 8, 7, 9, 10],
-            backgroundColor: "rgba(180, 83, 9, 0.2)",
-            borderColor: "#b45309",
-            borderWidth: 2,
-            pointBackgroundColor: "#b45309",
-            pointBorderColor: "#fff",
-          }]
-        },
-        options: {
-          maintainAspectRatio: false,
-          scales: {
-            r: {
-              angleLines: { color: "rgba(148, 163, 184, 0.2)" },
-              grid: { color: "rgba(148, 163, 184, 0.2)" },
-              pointLabels: { color: isDark ? "#e2e8f0" : "#1e3a8a", font: { size: 12 } },
-              suggestedMin: 0,
-              suggestedMax: 10,
-              ticks: { display: false }
+        window.addEventListener('beforeprint', () => {
+            const ctxRadar = document.getElementById("competencyRadar");
+            const ctxBar = document.getElementById("techSkillsChart");
+            
+            if(ctxRadar && ctxRadar.chart) {
+                ctxRadar.chart.options.scales.r.pointLabels.color = "#000000";
+                ctxRadar.chart.options.scales.r.grid.color = "#cbd5e1";
+                ctxRadar.chart.data.datasets[0].backgroundColor = "rgba(180, 83, 9, 0.5)";
+                ctxRadar.chart.options.scales.r.pointLabels.font.weight = 'bold';
+                ctxRadar.chart.update();
             }
-          },
-          plugins: { legend: { display: false } }
-        }
-      });
-
-      // B. Tech Skills Bar
-      const ctxTech = document.getElementById("techSkillsChart").getContext("2d");
-      new Chart(ctxTech, {
-        type: "bar",
-        data: {
-          labels: ["Python", "Generative AI", "GAS/JS", "Linux/Infra", "Adobe/DTP"],
-          datasets: [{
-            label: "習熟度",
-            data: [85, 95, 90, 70, 80],
-            backgroundColor: [
-              "#1e3a8a", // Navy
-              "#9333ea", // Purple
-              "#3b82f6", // Blue
-              "#64748b", // Slate
-              "#b45309", // Gold
-            ],
-            borderRadius: 4
-          }]
-        },
-        options: {
-          indexAxis: 'y',
-          maintainAspectRatio: false,
-          scales: {
-            x: { max: 100, grid: { display: false } },
-            y: { grid: { display: false }, ticks: { color: isDark ? "#e2e8f0" : "#1e3a8a", font: {weight: 'bold'} } }
-          },
-          plugins: { legend: { display: false } }
-        }
+            if(ctxBar && ctxBar.chart) {
+                ctxBar.chart.options.scales.y.ticks.color = "#000000";
+                ctxBar.chart.options.scales.y.ticks.font.weight = 'bold';
+                ctxBar.chart.update();
+            }
+        });
       });
     </script>
   </body>
